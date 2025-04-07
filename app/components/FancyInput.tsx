@@ -1,4 +1,4 @@
-import { TextInput, Text, View, StyleSheet, TextInputProps, Pressable } from 'react-native';
+import { TextInput, Text, View, StyleSheet, TextInputProps, Pressable, StyleProp, ViewStyle } from 'react-native';
 import { useRef } from 'react';
 
 type FancyInputProps = {
@@ -16,13 +16,13 @@ export default function FancyInput({ label, error, ...props } : FancyInputProps)
     return (
         <View style={styles.container}>
             {label && (
-                <Pressable onPress={focusInput} style={styles.pressable}>
+                <Pressable onPress={focusInput} style={styles.pressable as StyleProp<ViewStyle>}>
                     <Text style={styles.label}>{label}</Text>
                 </Pressable>
                 )}
             <TextInput
                 ref={inputRef}
-                style={[styles.input, error && styles.errorInput]} 
+                style={[styles.input && {outlineStyle: 'none'} as StyleProp<ViewStyle>, error && styles.errorInput]} 
                 placeholderTextColor="#999"
                 {...props}
             />
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         cursor: "default"
     },
     input: {
-        outlineStyle: 'none',
         padding: 3,
     },
     errorInput: {
