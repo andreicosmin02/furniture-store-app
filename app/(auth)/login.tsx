@@ -1,6 +1,6 @@
 import { Link, Redirect, router } from "expo-router";
 import { useState } from "react";
-import { Text, TextInput, View, StyleSheet, Image } from 'react-native'
+import { Text, TextInput, View, StyleSheet, Image, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 
@@ -21,8 +21,12 @@ export default function Login() {
     }
 
     return (
-        <View style={styles.screen}>
-            <View style={styles.container}>
+        <View
+            
+            style={styles.container}
+        >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <SafeAreaView style={styles.container}>
                 <Text style={styles.header}>Login Screen</Text>
                 <Image 
                     style={styles.homeImage}
@@ -31,49 +35,56 @@ export default function Login() {
                 <FancyInput
                     label="Email Address"
                     placeholder="example@example.com"
+                    autoCapitalize="none"
                 />
                 <FancyInput
                     label="Password"
                     placeholder="Enter your password"
                     secureTextEntry
+                    autoCapitalize="none"
                 />
                 <Button onPress={handleLogin}>Log In</Button>
-                <Link href='/register' style={{ color: '#58524A', margin: 10 }}>
+                <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
                     Don't you have an account? Sign up.
                 </Link>
-            </View>
+            </SafeAreaView>
+        </ScrollView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    screen: {
-        backgroundColor: "#EBDAC2",
-        height: "100%",
-        width: '100%',
-        alignItems: 'center'
-    },
     container: {
-        padding: 30,
-        flex:1,
-        alignItems: 'center',
-        backgroundColor: "#EBDAC2",
-        width: 350,
-    },
+        flex: 1,
+        backgroundColor: '#EBDAC2',
+      },
+      scrollContainer: {
+        flexGrow: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 30,
+      },
     header: {
+        width: '100%',
+        maxWidth: 400,
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#58524A'
+        color: '#58524A',
+        textAlign: 'center',
+        marginBottom: 20,
+        alignSelf: 'center'
     },
     homeImage: {
         width: '100%',
-        height: 175,
-        margin: 20,
+        maxWidth: 400,
+        alignSelf: 'center',
+        height: 170,
+        marginBottom: 20,
         borderRadius: 15
     },
     login: {
+        maxWidth: 400,
         margin: 3,
-        width: 300, 
-        borderRadius: 15
+        borderRadius: 15,
+        alignSelf: 'center',
     }
 })

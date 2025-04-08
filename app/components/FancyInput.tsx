@@ -34,21 +34,24 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         paddingInline: 15,
-        paddingVertical: 10,
+        paddingVertical: 3,
         borderRadius: 10,
         backgroundColor:"#F0E3D1",
-        marginVertical: 3
+        marginVertical: 3,
+        maxWidth: 400,
+        alignSelf: 'center',
     },
     label: {
-        marginBottom: 5,
         color: "#5C5248",
-        fontWeight: '600'
+        fontWeight: '600',
+        paddingTop: 5,
+        marginBottom: 3,
     },
     pressable: {
         cursor: "default"
     },
     input: {
-        padding: 3,
+        padding: 0,
     },
     errorInput: {
 

@@ -42,9 +42,11 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#AA7652',
         borderRadius: 15,
+        maxWidth: 400,
+        alignSelf: 'center',
     },
     pressed: {
-
+        backgroundColor: '#d1b39f'
     },
     disabled: {
         backgroundColor: '#CAA991'
