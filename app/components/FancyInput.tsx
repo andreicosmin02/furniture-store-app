@@ -1,12 +1,14 @@
 import { TextInput, Text, View, StyleSheet, TextInputProps, Pressable, StyleProp, ViewStyle } from 'react-native';
 import { useRef } from 'react';
+import { MaterialIcons } from '@expo/vector-icons'
 
 interface FancyInputProps extends TextInputProps {
     label?: string;
     error?: string;
+    icon?: keyof typeof MaterialIcons.glyphMap;
 }; // Inherits all TextInput props
 
-export default function FancyInput({ label, error, ...props } : FancyInputProps) {
+export default function FancyInput({ label, error, icon, ...props } : FancyInputProps) {
     const inputRef = useRef<TextInput>(null);
 
     const focusInput = () => {
@@ -20,12 +22,24 @@ export default function FancyInput({ label, error, ...props } : FancyInputProps)
                     <Text style={styles.label}>{label}</Text>
                 </Pressable>
                 )}
-            <TextInput
-                ref={inputRef}
-                style={[styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>, props.style]} 
-                placeholderTextColor="#999"
-                {...props}
-            />
+            <View style={styles.inputContainer}>
+                {icon && (
+                    <MaterialIcons
+                        name={icon}
+                        size={20}
+                        color="#5C5248"
+                        style={styles.icon}
+                    />
+                )}
+                <TextInput
+                    ref={inputRef}
+                    style={[
+                        styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>
+                    ]} 
+                    placeholderTextColor="#999"
+                    {...props}
+                />
+            </View>
         </View>
     );
 }
@@ -40,6 +54,8 @@ const styles = StyleSheet.create({
         marginVertical: 3,
         maxWidth: 400,
         alignSelf: 'center',
+        borderWidth: 1,
+        borderColor: 'transparent'
     },
     label: {
         color: "#5C5248",
@@ -48,13 +64,25 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
     pressable: {
-        cursor: "default"
+        cursor: "default",
+        
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    icon: {
+        marginRight: 8,
     },
     input: {
-        padding: 3
+        flex: 1,
+        padding: 3,
+        width: '100%'
     },
     errorInput: {
-        
+        // borderColor: 'red',
+        // borderWidth: 1,
     },
     errorText: {
         color: 'red'

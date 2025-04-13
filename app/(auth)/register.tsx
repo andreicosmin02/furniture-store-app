@@ -44,6 +44,7 @@ export default function Register() {
                         value={firstName}
                         onChangeText={setFirstName}
                         error={error}
+                        icon="person"
                     />
                     <FancyInput
                         label="Last Name"
@@ -51,6 +52,7 @@ export default function Register() {
                         value={lastName}
                         onChangeText={setLastName}
                         error={error}
+                        icon="person"
                     />
                     <FancyInput
                         label="Email Address"
@@ -59,6 +61,7 @@ export default function Register() {
                         value={email}
                         onChangeText={setEmail}
                         error={error}
+                        icon="email"
                     />
                     <FancyInput
                         label="Password"
@@ -68,6 +71,7 @@ export default function Register() {
                         value={password}
                         onChangeText={setPassword}
                         error={error}
+                        icon="lock"
                     />
                     <FancyInput
                         label="Confirm Password"
@@ -77,6 +81,7 @@ export default function Register() {
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         error={error}
+                        icon="lock"
                     />
                     <Button onPress={handleRegister}>Register</Button>
                     <Link href='/login' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>

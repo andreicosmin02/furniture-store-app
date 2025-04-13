@@ -38,6 +38,7 @@ export default function Login() {
                         value={email}
                         onChangeText={setEmail}
                         error={error}
+                        icon="email"
                     />
                     <FancyInput
                         label="Password"
@@ -47,6 +48,7 @@ export default function Login() {
                         value={password}
                         onChangeText={setPassword}
                         error={error}
+                        icon='lock'
                     />
                     <Button onPress={handleLogin}>Log In</Button>
                     <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
