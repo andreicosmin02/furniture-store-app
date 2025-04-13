@@ -26,7 +26,7 @@ export default function Login() {
         >
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.container}>
-                    <Text style={styles.header}>Login Screen</Text>
+                    {/* <Text style={styles.header}>Login Screen</Text> */}
                     <Image 
                         style={styles.homeImage}
                         source={require('../../assets/images/login_furniture.jpg')}

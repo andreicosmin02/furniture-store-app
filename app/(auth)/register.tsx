@@ -33,7 +33,7 @@ export default function Register() {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.container}>
-                    <Text style={styles.header}>Register Screen</Text>
+                    {/* <Text style={styles.header}>Register Screen</Text> */}
                     <Image 
                         style={styles.homeImage}
                         source={require('../../assets/images/register_page.jpg')}

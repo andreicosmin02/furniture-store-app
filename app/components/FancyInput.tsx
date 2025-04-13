@@ -16,31 +16,33 @@ export default function FancyInput({ label, error, icon, ...props } : FancyInput
     };
 
     return (
-        <View style={[styles.container, error && styles.errorInput]}>
-            {label && (
-                <Pressable onPress={focusInput} style={styles.pressable as StyleProp<ViewStyle>}>
-                    <Text style={styles.label}>{label}</Text>
-                </Pressable>
-                )}
-            <View style={styles.inputContainer}>
-                {icon && (
-                    <MaterialIcons
-                        name={icon}
-                        size={20}
-                        color="#5C5248"
-                        style={styles.icon}
+        <Pressable onPress={focusInput} style={styles.pressable as StyleProp<ViewStyle>}>
+            <View style={[styles.container, error && styles.errorInput]}>
+                {label && (
+                    
+                        <Text style={styles.label}>{label}</Text>
+                
+                    )}
+                <View style={styles.inputContainer}>
+                    {icon && (
+                        <MaterialIcons
+                            name={icon}
+                            size={20}
+                            color="#5C5248"
+                            style={styles.icon}
+                        />
+                    )}
+                    <TextInput
+                        ref={inputRef}
+                        style={[
+                            styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>
+                        ]} 
+                        placeholderTextColor="#999"
+                        {...props}
                     />
-                )}
-                <TextInput
-                    ref={inputRef}
-                    style={[
-                        styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>
-                    ]} 
-                    placeholderTextColor="#999"
-                    {...props}
-                />
+                </View>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         padding: 3,
-        width: '100%'
+        width: '80%',
+        maxWidth: '80%'
     },
     errorInput: {
         // borderColor: 'red',
