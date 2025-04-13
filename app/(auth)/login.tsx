@@ -36,17 +36,24 @@ export default function Login() {
                     label="Email Address"
                     placeholder="example@example.com"
                     autoCapitalize="none"
+                    value={email}
+                    onChangeText={setEmail}
+                    error={error}
                 />
                 <FancyInput
                     label="Password"
                     placeholder="Enter your password"
                     secureTextEntry
                     autoCapitalize="none"
+                    value={password}
+                    onChangeText={setPassword}
+                    error={error}
                 />
                 <Button onPress={handleLogin}>Log In</Button>
                 <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
                     Don't you have an account? Sign up.
                 </Link>
+                {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </SafeAreaView>
         </ScrollView>
         </View>
@@ -86,5 +93,10 @@ const styles = StyleSheet.create({
         margin: 3,
         borderRadius: 15,
         alignSelf: 'center',
+    },
+    errorText: {
+        color: 'red',
+        textAlign: 'center',
+        marginBottom: 10,
     }
 })

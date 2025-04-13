@@ -26,7 +26,7 @@ export default function Button({
             pressed && styles.pressed,
             disabled && styles.disabled
         ]}
-        hitSlop={10} // Exapnds touch area without visual change
+        hitSlop={10} // Exapands touch area without visual change
         >
             <Text style={[styles.text, textStyle]}>{children}</Text>
         </Pressable>

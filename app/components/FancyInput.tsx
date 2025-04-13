@@ -1,10 +1,10 @@
 import { TextInput, Text, View, StyleSheet, TextInputProps, Pressable, StyleProp, ViewStyle } from 'react-native';
 import { useRef } from 'react';
 
-type FancyInputProps = {
+interface FancyInputProps extends TextInputProps {
     label?: string;
     error?: string;
-} & TextInputProps; // Inherits all TextInput props
+}; // Inherits all TextInput props
 
 export default function FancyInput({ label, error, ...props } : FancyInputProps) {
     const inputRef = useRef<TextInput>(null);
@@ -14,7 +14,7 @@ export default function FancyInput({ label, error, ...props } : FancyInputProps)
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, error && styles.errorInput]}>
             {label && (
                 <Pressable onPress={focusInput} style={styles.pressable as StyleProp<ViewStyle>}>
                     <Text style={styles.label}>{label}</Text>
@@ -22,10 +22,11 @@ export default function FancyInput({ label, error, ...props } : FancyInputProps)
                 )}
             <TextInput
                 ref={inputRef}
-                style={[styles.input && {outlineStyle: 'none'} as StyleProp<ViewStyle>, error && styles.errorInput]} 
+                style={[styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>, props.style]} 
                 placeholderTextColor="#999"
                 {...props}
             />
+            
         </View>
     );
 }
@@ -51,12 +52,12 @@ const styles = StyleSheet.create({
         cursor: "default"
     },
     input: {
-        padding: 0,
+        padding: 3
     },
     errorInput: {
-
+        
     },
     errorText: {
-
+        color: 'red'
     }
 })
