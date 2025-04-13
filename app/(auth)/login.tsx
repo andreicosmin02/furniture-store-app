@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Text, TextInput, View, StyleSheet, Image, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
+import ImageWithLoader from "../components/ImageWithLoader";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ export default function Login() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.container}>
                     {/* <Text style={styles.header}>Login Screen</Text> */}
-                    <Image 
+                    <ImageWithLoader 
                         style={styles.homeImage}
                         source={require('../../assets/images/login_furniture.jpg')}
                     />

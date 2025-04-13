@@ -3,6 +3,7 @@ import { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image } from "react-native";
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
+import ImageWithLoader from "../components/ImageWithLoader";
 
 export default function Register() {
     const [firstName, setFirstName] = useState('')
@@ -34,7 +35,7 @@ export default function Register() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.container}>
                     {/* <Text style={styles.header}>Register Screen</Text> */}
-                    <Image 
+                    <ImageWithLoader 
                         style={styles.homeImage}
                         source={require('../../assets/images/register_page.jpg')}
                     />
