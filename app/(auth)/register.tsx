@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image } from "react-n
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
+import { isValidEmail, isValidPassword } from "../utils/validation";
 
 export default function Register() {
     const [firstName, setFirstName] = useState('')
@@ -12,7 +13,7 @@ export default function Register() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
-
+    
     const handleRegister = () => {
         if (
             !firstName ||
@@ -25,6 +26,20 @@ export default function Register() {
             return;
         }
 
+        if (!isValidEmail(email)) {
+            setError("Please enter a valid email address");
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            setError("Weak password");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
+            return;
+        }
         // TODO: Register logic
 
         router.replace('/(app)/home')

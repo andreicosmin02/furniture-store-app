@@ -4,6 +4,7 @@ import { Text, TextInput, View, StyleSheet, Image, SafeAreaView, ScrollView, Key
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
+import { isValidEmail, isValidPassword } from "../utils/validation";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -13,6 +14,16 @@ export default function Login() {
     const handleLogin = () => {
         if (!email || !password) {
             setError('Please fill in all fields');
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            setError("Please enter a valid email address");
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            setError("Weak password");
             return;
         }
 
