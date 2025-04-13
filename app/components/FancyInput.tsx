@@ -26,7 +26,6 @@ export default function FancyInput({ label, error, ...props } : FancyInputProps)
                 placeholderTextColor="#999"
                 {...props}
             />
-            
         </View>
     );
 }

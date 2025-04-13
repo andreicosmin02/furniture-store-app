@@ -22,40 +22,39 @@ export default function Login() {
 
     return (
         <View
-            
             style={styles.container}
         >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <SafeAreaView style={styles.container}>
-                <Text style={styles.header}>Login Screen</Text>
-                <Image 
-                    style={styles.homeImage}
-                    source={require('../../assets/images/login_furniture.jpg')}
-                />
-                <FancyInput
-                    label="Email Address"
-                    placeholder="example@example.com"
-                    autoCapitalize="none"
-                    value={email}
-                    onChangeText={setEmail}
-                    error={error}
-                />
-                <FancyInput
-                    label="Password"
-                    placeholder="Enter your password"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    value={password}
-                    onChangeText={setPassword}
-                    error={error}
-                />
-                <Button onPress={handleLogin}>Log In</Button>
-                <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
-                    Don't you have an account? Sign up.
-                </Link>
-                {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            </SafeAreaView>
-        </ScrollView>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <SafeAreaView style={styles.container}>
+                    <Text style={styles.header}>Login Screen</Text>
+                    <Image 
+                        style={styles.homeImage}
+                        source={require('../../assets/images/login_furniture.jpg')}
+                    />
+                    <FancyInput
+                        label="Email Address"
+                        placeholder="example@example.com"
+                        autoCapitalize="none"
+                        value={email}
+                        onChangeText={setEmail}
+                        error={error}
+                    />
+                    <FancyInput
+                        label="Password"
+                        placeholder="Enter your password"
+                        secureTextEntry
+                        autoCapitalize="none"
+                        value={password}
+                        onChangeText={setPassword}
+                        error={error}
+                    />
+                    <Button onPress={handleLogin}>Log In</Button>
+                    <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
+                        Don't you have an account? Sign up.
+                    </Link>
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                </SafeAreaView>
+            </ScrollView>
         </View>
     )
 }
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 400,
         alignSelf: 'center',
-        height: 170,
+        height: 250,
         marginBottom: 20,
         borderRadius: 15
     },
