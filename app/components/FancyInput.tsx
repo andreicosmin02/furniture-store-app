@@ -1,6 +1,7 @@
 import { TextInput, Text, View, StyleSheet, TextInputProps, Pressable, StyleProp, ViewStyle } from 'react-native';
 import { useRef } from 'react';
 import { MaterialIcons } from '@expo/vector-icons'
+import { Colors } from '../constants/Colors';
 
 interface FancyInputProps extends TextInputProps {
     label?: string;
@@ -28,7 +29,7 @@ export default function FancyInput({ label, error, icon, ...props } : FancyInput
                         <MaterialIcons
                             name={icon}
                             size={20}
-                            color="#5C5248"
+                            color={Colors.inputText}//"#5C5248"
                             style={styles.icon}
                         />
                     )}
@@ -37,7 +38,7 @@ export default function FancyInput({ label, error, icon, ...props } : FancyInput
                         style={[
                             styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>
                         ]} 
-                        placeholderTextColor="#999"
+                        placeholderTextColor={Colors.placeHolderText}
                         {...props}
                     />
                 </View>
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
         paddingInline: 15,
         paddingVertical: 3,
         borderRadius: 10,
-        backgroundColor:"#F0E3D1",
+        backgroundColor: Colors.inputBackground,//"#F0E3D1",
         marginVertical: 3,
         maxWidth: 400,
         alignSelf: 'center',
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
         borderColor: 'transparent'
     },
     label: {
-        color: "#5C5248",
+        color: Colors.inputText,//"#5C5248",
         fontWeight: '600',
         paddingTop: 5,
         marginBottom: 3,
@@ -88,6 +89,6 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
     },
     errorText: {
-        color: 'red'
+        color: Colors.error
     }
 })

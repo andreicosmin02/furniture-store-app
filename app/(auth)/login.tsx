@@ -1,10 +1,11 @@
-import { Link, Redirect, router } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Text, TextInput, View, StyleSheet, Image, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
+import { Text, View, StyleSheet,  SafeAreaView, ScrollView } from 'react-native'
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
 import { isValidEmail, isValidPassword } from "../utils/validation";
+import { Colors } from "../constants/Colors";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -63,7 +64,7 @@ export default function Login() {
                         icon='lock'
                     />
                     <Button onPress={handleLogin}>Log In</Button>
-                    <Link href='/register' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
+                    <Link href='/register' style={{ color: Colors.primaryText, margin: 10, textAlign:"center" }}>
                         Don't you have an account? Sign up.
                     </Link>
                     {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -76,19 +77,19 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EBDAC2',
-      },
-      scrollContainer: {
-        flexGrow: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 30,
-      },
+        backgroundColor: Colors.primaryBackground//'#EBDAC2',
+    },
+    scrollContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    },
     header: {
         width: '100%',
         maxWidth: 400,
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#58524A',
+        color: Colors.primaryText,//'#58524A',
         textAlign: 'center',
         marginBottom: 20,
         alignSelf: 'center'
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     errorText: {
-        color: 'red',
+        color: Colors.error,
         textAlign: 'center',
         marginBottom: 10,
     }

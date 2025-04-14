@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 import { GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native";
+import { Colors } from "../constants/Colors";
 
 type ButtonProps = {
     children: ReactNode;
@@ -40,16 +41,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
-        backgroundColor: '#AA7652',
+        backgroundColor: Colors.buttonBackground,//'#AA7652',
         borderRadius: 15,
         maxWidth: 400,
         alignSelf: 'center',
     },
     pressed: {
-        backgroundColor: '#d1b39f'
+        backgroundColor: Colors.buttonPressedBackground,
     },
     disabled: {
-        backgroundColor: '#CAA991'
+        backgroundColor: Colors.buttonDisabledBackground,
     }, 
     text: {
         fontSize: 20,

@@ -5,6 +5,7 @@ import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
 import { isValidEmail, isValidPassword } from "../utils/validation";
+import { Colors } from "../constants/Colors";
 
 export default function Register() {
     const [firstName, setFirstName] = useState('')
@@ -100,7 +101,7 @@ export default function Register() {
                         icon="lock"
                     />
                     <Button onPress={handleRegister}>Register</Button>
-                    <Link href='/login' style={{ color: '#58524A', margin: 10, textAlign:"center" }}>
+                    <Link href='/login' style={{ color: Colors.primaryText, margin: 10, textAlign:"center" }}>
                         You have an account? Log in.
                     </Link>
                     {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -113,7 +114,7 @@ export default function Register() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EBDAC2',
+        backgroundColor: Colors.primaryBackground,//'#EBDAC2',
       },
       scrollContainer: {
         flexGrow: 1,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#58524A',
+        color: Colors.primaryText,
         textAlign: 'center',
         marginBottom: 20,
         alignSelf: 'center'
