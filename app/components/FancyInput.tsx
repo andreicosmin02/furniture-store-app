@@ -18,37 +18,37 @@ export default function FancyInput({ label, error, icon, ...props } : FancyInput
 
     return (
         <Pressable onPress={focusInput} style={styles.pressable as StyleProp<ViewStyle>}>
-            <View style={[styles.container, error && styles.errorInput]}>
-                {label && (
-                    
-                        <Text style={styles.label}>{label}</Text>
+            {label && (
                 
-                    )}
-                <View style={styles.inputContainer}>
-                    {icon && (
-                        <MaterialIcons
-                            name={icon}
-                            size={20}
-                            color={Colors.inputText}//"#5C5248"
-                            style={styles.icon}
-                        />
-                    )}
-                    <TextInput
-                        ref={inputRef}
-                        style={[
-                            styles.input && {outlineStyle: 'none'} as StyleProp<TextInputProps>
-                        ]} 
-                        placeholderTextColor={Colors.placeHolderText}
-                        {...props}
+                    <Text style={styles.label}>{label}</Text>
+            
+                )}
+            <View style={styles.inputContainer}>
+                {icon && (
+                    <MaterialIcons
+                        name={icon}
+                        size={20}
+                        color={Colors.inputText}//"#5C5248"
+                        style={styles.icon}
                     />
-                </View>
+                )}
+                <TextInput
+                    ref={inputRef}
+                    style={[
+                        styles.input, 
+                        {outlineStyle: 'none'} as StyleProp<TextInputProps>,
+                    ]} 
+                    
+                    placeholderTextColor={Colors.placeHolderText}
+                    {...props}
+                />
             </View>
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    pressable: {
         width: '100%',
         paddingInline: 15,
         paddingVertical: 3,
@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         alignSelf: 'center',
         borderWidth: 1,
-        borderColor: 'transparent'
+        borderColor: 'transparent',
+        cursor: "default",
     },
     label: {
         color: Colors.inputText,//"#5C5248",
@@ -66,10 +67,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         marginBottom: 3,
     },
-    pressable: {
-        cursor: "default",
-        
-    },
+    
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -79,14 +77,12 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     input: {
+        width: '100%',
         flex: 1,
         padding: 3,
-        width: '80%',
-        maxWidth: '80%'
     },
     errorInput: {
-        // borderColor: 'red',
-        // borderWidth: 1,
+        
     },
     errorText: {
         color: Colors.error

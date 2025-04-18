@@ -30,7 +30,7 @@ export default function Login() {
 
         // TODO: Login Logic
 
-        router.replace('/(app)/home');
+        router.replace('/(app)/home/home');
     }
 
     return (

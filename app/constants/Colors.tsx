@@ -12,4 +12,4 @@ export const Colors = {
     error: '#FF4444',
 }
 
-export type ColorsType = keyof typeof Colors;
+export default Colors;
