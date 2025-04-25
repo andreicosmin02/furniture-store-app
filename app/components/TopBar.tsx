@@ -35,7 +35,7 @@ export default function TopBar() {
                     />
             </View>
             <View style={styles.iconsContainer}>
-                <Pressable style={styles.iconButton}>
+                <Pressable onPress={() => router.navigate('../(app)/cart')} style={styles.iconButton}>
                     <View style={styles.cartIconContainer}>
                         <MaterialIcons
                             name="shopping-cart"
@@ -51,7 +51,7 @@ export default function TopBar() {
                         )}
                     </View>
                 </Pressable>
-                <Pressable style={styles.iconButton}>
+                <Pressable onPress={() => router.navigate('../(app)/account')} style={styles.iconButton}>
                     <MaterialIcons
                         name="person"
                         size={20}
