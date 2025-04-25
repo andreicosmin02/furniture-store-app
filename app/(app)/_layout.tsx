@@ -11,20 +11,20 @@ export default function AppLayout() {
                     headerStyle: {
                         backgroundColor: Colors.primaryBackground,
                         borderBottomWidth: 1,
-                        borderBottomColor: Colors.border,//'#AA765250',
+                        borderBottomColor: Colors.border,
                     },
                     headerTitleStyle: {
-                        color: Colors.primaryText,//'#58524A',
+                        color: Colors.primaryText,
                         fontSize: 20,
                         fontWeight: '600',
                     },
-                    headerTintColor: Colors.buttonBackground,//'#AA7652',
+                    headerTintColor: Colors.buttonBackground,
                     // Add these for Android status bar
-                    statusBarColor: Colors.primaryBackground,//'#EBDAC2', // Matches header background
+                    statusBarColor: Colors.primaryBackground, // Matches header background
                     statusBarStyle: 'dark', // Dark text for status bar
                 }}
             >
-                <Stack.Screen name='home/home' options={{ title: 'Home Page', headerShown: false}}/>
+                <Stack.Screen name='home/index' options={{ title: 'Home Page', headerShown: false}}/>
             </Stack>
         </>
     );

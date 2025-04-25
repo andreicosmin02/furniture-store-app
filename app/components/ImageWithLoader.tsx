@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, ActivityIndicator, ImageProps, View, Image, ViewProps } from "react-native";
+import Colors from "../constants/Colors";
 
 export default function ImageWithLoader({ style, ...props }: ImageProps ) {
     const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +34,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EBDAC2'
+        backgroundColor: Colors.primaryBackground,//'#EBDAC2'
     }
 })

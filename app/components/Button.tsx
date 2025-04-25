@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     }, 
     text: {
         fontSize: 20,
-        color: '#F4EDE2'
+        color: Colors.buttonText,//'#F4EDE2'
     }
 })

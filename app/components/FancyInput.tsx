@@ -37,7 +37,7 @@ export default function FancyInput({ label, error, icon, ...props } : FancyInput
                     style={[
                         styles.input, 
                         {outlineStyle: 'none'} as StyleProp<TextInputProps>,
-                    ]} 
+                    ]}
                     
                     placeholderTextColor={Colors.placeHolderText}
                     {...props}

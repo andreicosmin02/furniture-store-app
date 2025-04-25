@@ -43,7 +43,7 @@ export default function Register() {
         }
         // TODO: Register logic
 
-        router.replace('/(app)/home/home')
+        router.replace('/(app)/home')
     }
 
     return (
