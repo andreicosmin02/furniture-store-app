@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AppLayout() {
 
-    function returnHome() {
+    const returnHome = () => {
         return (
             <Pressable 
                 onPress={() => router.replace("/home")}

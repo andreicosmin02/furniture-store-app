@@ -66,18 +66,19 @@ export default function TopBar() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        paddingInline: 15,
+        // paddingInline: 15,
         paddingVertical: 3,
-        borderRadius: 10,
-        marginVertical: 3,
+        // borderRadius: 10,
+        marginVertical: 10,
         maxWidth: 400,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        height: 50,
     },
     searchContainer: {
         flex: 1,
-        marginRight: 10
+        marginRight: 10,
     },
     iconsContainer: {
         flexDirection: 'row',
