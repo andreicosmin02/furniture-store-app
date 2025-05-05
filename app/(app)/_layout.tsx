@@ -64,6 +64,24 @@ export default function AppLayout() {
                     headerRight: returnHome,
                     headerTitleAlign: 'center'
                 }}/>
+
+                {/* Dynamic product routes */}
+                <Stack.Screen
+                    name="products/[category]"
+                    options={{
+                        title: 'Products',
+                        headerRight: returnHome,
+                        headerTitleAlign: 'center'
+                    }}
+                />
+                <Stack.Screen
+                    name="products/[category]/[product]"
+                    options={{
+                        title: 'Product Details',
+                        headerRight: returnHome,
+                        headerTitleAlign: 'center'
+                    }}
+                />
             </Stack>
         </>
     );
