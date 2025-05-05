@@ -4,9 +4,49 @@ import ImageWithLoader from "@/app/components/ImageWithLoader";
 import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { RelativePathString } from "expo-router";
 import React from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, Image } from "react-native";
 
+interface Category {
+    name: string;
+    source: any; 
+    redirectPath: RelativePathString;
+}
+
+const categories: Category[] = [
+    {
+        name: 'Sofas',
+        source: require('../../../assets/images/furniture/sofa.jpg'),
+        redirectPath: './products/sofas'
+    },
+    {
+        name: 'Chairs',
+        source: require('../../../assets/images/furniture/chair.jpg'),
+        redirectPath: './products/chairs'
+    },
+    {
+        name: 'Tables',
+        source: require('../../../assets/images/furniture/table.jpg'),
+        redirectPath: './products/tables'
+    },
+    {
+        name: 'Beds',
+        source: require('../../../assets/images/furniture/bed.jpg'),
+        redirectPath: './products/Beds'
+    },
+    {
+        name: 'Tables',
+        source: { uri: 'https://picsum.photos/200/300/?blur&random=8' },
+        redirectPath: './products/tables'
+    },
+    {
+        name: 'Desks',
+        source: { uri: 'https://picsum.photos/200/300/?blur&random=9' },
+        redirectPath: './products/Desks'
+    },
+];
+ 
 export default function Home() {
     return (
         <View
@@ -15,51 +55,18 @@ export default function Home() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.safeAreaView}>
                     <TopBar/>
-                    <Image
+                    <ImageWithLoader
                         style={styles.homeImage}
-                        source={{uri: 'https://picsum.photos/200/300/?blur&random=1'}}
+                        source={require('../../../assets/images/home_image.jpg')}
                     />
                     <Text style={styles.categoriesText}>Categories</Text>
-                    <FurnitureCategory 
-                        redirectPath="./products/sofas"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=2'}}
-                        categoryName="Sofas"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/chairs"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=3'}}
-                        categoryName="Chairs"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/tables"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=4'}}
-                        categoryName="Tables"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/Desks"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=5'}}
-                        categoryName="Beds"
-                    />
-                    <FurnitureCategory 
-                    redirectPath="./products/sofas"
-                    image={{uri: 'https://picsum.photos/200/300/?blur&random=6'}}
-                    categoryName="Sofas"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/chairs"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=7'}}
-                        categoryName="Chairs"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/tables"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=8'}}
-                        categoryName="Tables"
-                    />
-                    <FurnitureCategory 
-                        redirectPath="./products/Desks"
-                        image={{uri: 'https://picsum.photos/200/300/?blur&random=9'}}
-                        categoryName="Beds"
-                    />
+                    {categories.map((category) => (
+                        <FurnitureCategory
+                            redirectPath={category.redirectPath}
+                            image={category.source}
+                            categoryName={category.name}
+                        />
+                    ))}
                 </SafeAreaView>
             </ScrollView>
         </View>
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 400,
         alignSelf: 'center',
-        height: 250,
+        height: 175,
         marginBottom: 20,
         borderRadius: 15
     },

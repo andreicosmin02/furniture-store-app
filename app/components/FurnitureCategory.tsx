@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         margin: 5,
         padding: 10,
         backgroundColor: Colors.inputBackground,
-        // borderWidth: 2,
         borderRadius: 10,
         borderColor: Colors.border
     },
@@ -50,7 +49,8 @@ const styles = StyleSheet.create({
     },
     image: {
         width: 75,
-        height: 76
+        height: 76,
+        borderRadius: 7
     },
     categoryName: {
         margin: 10,
