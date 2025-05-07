@@ -18,32 +18,22 @@ const categories: Category[] = [
     {
         name: 'Sofas',
         source: require('../../../assets/images/furniture/sofa.jpg'),
-        redirectPath: './products/sofas'
+        redirectPath: './products/sofa'
     },
     {
         name: 'Chairs',
         source: require('../../../assets/images/furniture/chair.jpg'),
-        redirectPath: './products/chairs'
+        redirectPath: './products/chair'
     },
     {
         name: 'Tables',
         source: require('../../../assets/images/furniture/table.jpg'),
-        redirectPath: './products/tables'
+        redirectPath: './products/table'
     },
     {
         name: 'Beds',
         source: require('../../../assets/images/furniture/bed.jpg'),
-        redirectPath: './products/Beds'
-    },
-    {
-        name: 'Tables',
-        source: { uri: 'https://picsum.photos/200/300/?blur&random=8' },
-        redirectPath: './products/tables'
-    },
-    {
-        name: 'Desks',
-        source: { uri: 'https://picsum.photos/200/300/?blur&random=9' },
-        redirectPath: './products/Desks'
+        redirectPath: './products/bed'
     },
 ];
  
@@ -80,15 +70,16 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         alignItems: 'center'
     },
     safeAreaView: {
         maxWidth: 400
     },
     homeImage: {
-        width: '100%',
         maxWidth: 400,
+        minWidth: 200,
+        width: '100%',
         alignSelf: 'center',
         height: 175,
         marginBottom: 20,

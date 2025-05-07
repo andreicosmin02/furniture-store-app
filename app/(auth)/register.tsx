@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.primaryBackground,//'#EBDAC2',
-      },
-      scrollContainer: {
-        flexGrow: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 30,
-      },
+    },
+    scrollContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    },
     header: {
         width: '100%',
         maxWidth: 400,
