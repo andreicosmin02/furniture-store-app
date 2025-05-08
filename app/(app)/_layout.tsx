@@ -1,5 +1,5 @@
 import { router, Stack, Tabs } from "expo-router";
-import { Pressable, StatusBar } from "react-native";
+import { Pressable, StatusBar, ViewStyle } from "react-native";
 import { Colors } from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -37,7 +37,7 @@ export default function AppLayout() {
                         backgroundColor: Colors.primaryBackground,
                         borderBottomWidth: 1,
                         borderBottomColor: Colors.border
-                    },
+                    } as any,
                     headerTitleStyle: {
                         color: Colors.primaryText,
                         fontSize: 20,
@@ -48,7 +48,7 @@ export default function AppLayout() {
                     statusBarColor: Colors.primaryBackground, // Matches header background
                     statusBarStyle: 'dark', // Dark text for status bar
                     style:"sticky"
-                }}
+                } as any} 
             >
                 <Stack.Screen name='home/index' options={{ 
                     title: 'Home Page', 

@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     safeAreaView: {
-        maxWidth: 400
+        maxWidth: 400, 
+        marginInline: 10
     },
     homeImage: {
         maxWidth: 400,

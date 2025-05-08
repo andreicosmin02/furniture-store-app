@@ -24,15 +24,11 @@ export default function ImageWithLoader({ style, ...props }: ImageProps ) {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        overflow: 'hidden',
-
-        width: "100%",
-        height: '100%'
+        overflow: 'hidden'
     },
     image: {
         width: "100%",
-        height: '100%',
-        objectFit: 'none'
+        height: "100%",
     },
     loader: {
         ...StyleSheet.absoluteFillObject,

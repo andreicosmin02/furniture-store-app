@@ -39,7 +39,7 @@ export default function ProductsScreen() {
                             />
                         )}
                         keyExtractor={item => item.id}
-                        // numColumns={1}
+                        // numColumns={2}
                         contentContainerStyle={styles.categoriesList}
                     />
                 </SafeAreaView>
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
         color: Colors.buttonBackground,
         marginLeft: 10,
         marginBottom: 10,
-        
     }
 })
 
