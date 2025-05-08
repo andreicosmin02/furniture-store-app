@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     },
     image: {
         width: 75,
-        height: 76,
-        borderRadius: 7
+        height: 75,
+        borderRadius: 7,
     },
     categoryName: {
         margin: 10,

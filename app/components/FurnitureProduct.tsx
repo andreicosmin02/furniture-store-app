@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         width: '50%',
-        height: 150
+        aspectRatio: 1
     },
     image: {
         width: '100%',
         height: '100%',
-        borderRadius: 7
+        borderRadius: 7,
     },
     textContainer: {
         width: '50%',

@@ -34,7 +34,7 @@ export default function ProductsScreen() {
                                 redirectPath={('./' + category + '/' + item.id) as RelativePathString}
                                 image={item.imageSource}
                                 productName={item.name}
-                                productDescription={item.description}
+                                productDescription={item.short_description}
                                 productPrice={item.price}
                             />
                         )}
@@ -52,17 +52,16 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primaryBackground,
         flex: 1,
+        paddingInline: 10
     },
     scrollContainer: {
         flexGrow: 1,
-        // paddingHorizontal: 20,
         alignItems: 'center'
     },
     safeAreaView: {
         maxWidth: 400,
         minWidth: 200,
         width: '100%',
-        // padding: 10
     },
     homeImage: {
         maxWidth: 400,

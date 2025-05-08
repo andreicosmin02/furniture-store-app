@@ -17,22 +17,22 @@ interface Category {
 const categories: Category[] = [
     {
         name: 'Sofas',
-        source: require('../../../assets/images/furniture/sofa.jpg'),
+        source: require('../../../assets/images/furniture/sofa_1.png'),
         redirectPath: './products/sofa'
     },
     {
         name: 'Chairs',
-        source: require('../../../assets/images/furniture/chair.jpg'),
+        source: require('../../../assets/images/furniture/chair_10.png'),
         redirectPath: './products/chair'
     },
     {
         name: 'Tables',
-        source: require('../../../assets/images/furniture/table.jpg'),
+        source: require('../../../assets/images/furniture/table_13.png'),
         redirectPath: './products/table'
     },
     {
         name: 'Beds',
-        source: require('../../../assets/images/furniture/bed.jpg'),
+        source: require('../../../assets/images/furniture/bed_18.png'),
         redirectPath: './products/bed'
     },
 ];
@@ -47,7 +47,7 @@ export default function Home() {
                     <TopBar/>
                     <ImageWithLoader
                         style={styles.homeImage}
-                        source={require('../../../assets/images/home_image.jpg')}
+                        source={require('../../../assets/images/me.jpeg')}
                     />
                     <Text style={styles.categoriesText}>Categories</Text>
                     {categories.map((category) => (
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         minWidth: 200,
         width: '100%',
         alignSelf: 'center',
-        height: 175,
+        height: 200,
         marginBottom: 20,
         borderRadius: 15
     },
