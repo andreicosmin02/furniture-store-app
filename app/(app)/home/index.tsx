@@ -50,11 +50,12 @@ export default function Home() {
                         source={require('../../../assets/images/me.jpeg')}
                     />
                     <Text style={styles.categoriesText}>Categories</Text>
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
                         <FurnitureCategory
                             redirectPath={category.redirectPath}
                             image={category.source}
                             categoryName={category.name}
+                            key={index}
                         />
                     ))}
                 </SafeAreaView>
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         minWidth: 200,
         width: '100%',
+        aspectRatio: 2, 
         alignSelf: 'center',
         height: 200,
         marginBottom: 20,

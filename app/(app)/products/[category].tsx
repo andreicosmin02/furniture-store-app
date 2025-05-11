@@ -11,7 +11,7 @@ export default function ProductsScreen() {
     const { category } = useLocalSearchParams();
     const categoryCapitalized: string = category[0].toUpperCase() + category.slice(1);
     const products = getProductsByCategory(category.toString());
-    console.log(products)
+    // console.log(products)
 
 
     return (
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     safeAreaView: {
         maxWidth: 400,
         minWidth: 200,
-        width: '100%',
+        // width: '100%',
     },
     homeImage: {
         maxWidth: 400,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 const getProductsByCategory = (category: string) => {
     // Replace with your actual data source
     const allProducts = products;
-    
+
     return allProducts.filter(
         product => product.category.toLowerCase() === category.toLowerCase()
     );

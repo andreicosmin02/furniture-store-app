@@ -1,14 +1,5 @@
 import { RelativePathString } from "expo-router";
-
-export interface Product {
-    id: string;
-    name: string;
-    category: string;
-    short_description: string;
-    long_description: string;
-    price: number;
-    imageSource: any;
-}
+import { Product } from "../types/product";
 
 export const products: Product[] = [
   // Sofas (5 items)
@@ -733,3 +724,5 @@ export const products: Product[] = [
     imageSource: require('../../assets/images/furniture/bed_20.png')
   }
 ];
+
+export default products;

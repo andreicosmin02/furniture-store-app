@@ -4,10 +4,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { useState } from "react";
 import { router } from "expo-router";
+import { useCartStore } from "../data/cartStore";
 
 export default function TopBar() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [cartItems, setCartItems] = useState(3);
+    const cartItems = useCartStore((state) => state.items);
+    // const [cartItems, setCartItems] = useState(3);
 
     const handleSearchSubmit = () => {
         if (searchQuery.trim()) {
@@ -42,10 +44,10 @@ export default function TopBar() {
                             size={20}
                             style={styles.topbarButton}
                             />
-                        {cartItems > 0 && (
+                        {cartItems.length > 0 && (
                             <View style={styles.badge}>
                                 <Text style={styles.badgeText}>
-                                    {cartItems > 9 ? '9+': cartItems}
+                                    {cartItems.length > 9 ? '9+': cartItems.length}
                                 </Text>
                             </View>
                         )}

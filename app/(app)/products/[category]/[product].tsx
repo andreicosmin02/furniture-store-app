@@ -2,7 +2,9 @@ import Button from "@/app/components/Button";
 import ImageWithLoader from "@/app/components/ImageWithLoader";
 import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
+import { useCartStore } from "@/app/data/cartStore";
 import { products } from "@/app/data/products";
+import { Product } from "@/app/types/product";
 import { MaterialIcons } from "@expo/vector-icons";
 import { RelativePathString, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, ScrollView, View, Text, StyleSheet } from "react-native";
@@ -14,7 +16,6 @@ const formatProductDescription = (description: string) => {
       .map((paragraph, index) => {
         // Format headings
         paragraph = paragraph.trim()
-        console.log(paragraph)
         if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
           return (
             <Text key={index} style={[styles.longDescriptionText, styles.heading]}>
@@ -44,14 +45,13 @@ const formatProductDescription = (description: string) => {
         );
       });
   };
-  
-  
+
+
 
 export default function ProductsScreen() {
     const { category, product } = useLocalSearchParams()
-    const productObject = products.find((item) => item.id === product)
-    console.log(product)
-
+    const productObject: Product | undefined = products.find((item) => item.id === product)
+    const addToCart = useCartStore(state => state.addToCart);
 
     return (
         <View style={styles.container}>
@@ -60,7 +60,7 @@ export default function ProductsScreen() {
                     <TopBar/>
 
                     <View style={styles.titleContainer}>
-                        <ImageWithLoader 
+                        <ImageWithLoader
                             style={styles.homeImage}
                             source={productObject?.imageSource}
                         />
@@ -68,8 +68,8 @@ export default function ProductsScreen() {
                         <Text style={styles.categoriesText}>{productObject?.name}</Text>
                         <Text style={styles.shortDescription}>{productObject?.short_description}</Text>
                         <Text style={styles.priceText}>{productObject?.price} Lei</Text>
-                        
-                        <Button onPress={() => {}} style={styles.cartButton} textStyle={styles.cartButtonText}>
+
+                        <Button onPress={() => {addToCart(productObject as Product); console.log('added to cart')}} style={styles.cartButton} textStyle={styles.cartButtonText}>
                             {/* <MaterialIcons
                                 name="shopping-cart"
                                 size={30}
@@ -83,7 +83,6 @@ export default function ProductsScreen() {
                         <Text style={styles.longDescriptionHeader}>Description</Text>
                         {formatProductDescription(productObject!.long_description)}
                     </View>
-                    
                 </SafeAreaView>
             </ScrollView>
         </View>
@@ -170,7 +169,5 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 16,
         fontWeight: '600',
-        // marginTop: 10,
-        // marginBottom: 5
     },
 })

@@ -11,7 +11,8 @@ export default function AuthLayout() {
                     headerStyle: {
                         backgroundColor: Colors.primaryBackground,//'#EBDAC2',
                         borderBottomWidth: 1,
-                        borderBottomColor: Colors.border//'#AA765250',
+                        borderBottomColor: Colors.border,//'#AA765250'
+                        
                     } as any,
                     headerTitleStyle: {
                         color: Colors.primaryText,//'#58524A',
