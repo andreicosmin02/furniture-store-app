@@ -1,11 +1,9 @@
-import FurnitureCategory from "@/app/components/FurnitureCategory";
 import FurnitureProduct from "@/app/components/FurnitureProduct";
-import ImageWithLoader from "@/app/components/ImageWithLoader";
 import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
-import { products } from "@/app/data/products";
-import { RelativePathString, useLocalSearchParams } from "expo-router";
-import { View, Text, ScrollView, SafeAreaView, StyleSheet, FlatList } from "react-native";
+import {products} from "@/app/data/products";
+import {RelativePathString, useLocalSearchParams} from "expo-router";
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 
 export default function ProductsScreen() {
     const { category } = useLocalSearchParams();
@@ -87,9 +85,7 @@ const styles = StyleSheet.create({
 // Filtering functions
 const getProductsByCategory = (category: string) => {
     // Replace with your actual data source
-    const allProducts = products;
-
-    return allProducts.filter(
+    return products.filter(
         product => product.category.toLowerCase() === category.toLowerCase()
     );
 };

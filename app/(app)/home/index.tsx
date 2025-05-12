@@ -36,7 +36,7 @@ const categories: Category[] = [
         redirectPath: './products/bed'
     },
 ];
- 
+
 export default function Home() {
     return (
         <View
@@ -68,15 +68,16 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primaryBackground,
         flex: 1,
+        paddingInline: 10
     },
     scrollContainer: {
         flexGrow: 1,
-        // paddingHorizontal: 20,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     safeAreaView: {
-        maxWidth: 400, 
-        marginInline: 10
+        maxWidth: 400,
+        minWidth: 200,
+        // width: '100%',
     },
     homeImage: {
         maxWidth: 400,

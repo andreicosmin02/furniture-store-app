@@ -7,7 +7,7 @@ interface FancyInputProps extends TextInputProps {
     label?: string;
     error?: string;
     icon?: keyof typeof MaterialIcons.glyphMap;
-}; // Inherits all TextInput props
+} // Inherits all TextInput props
 
 export default function FancyInput({ label, error, icon, ...props } : FancyInputProps) {
     const inputRef = useRef<TextInput>(null);
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         borderRadius: 10,
         backgroundColor: Colors.inputBackground,//"#F0E3D1",
-        marginVertical: 3,
+        marginBottom: 10,
         maxWidth: 400,
         alignSelf: 'center',
         borderWidth: 1,
@@ -74,12 +74,13 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     icon: {
-        marginRight: 8,
+
     },
     input: {
         width: '100%',
         flex: 1,
         padding: 3,
+        marginBottom: 5,
     },
     errorInput: {
         
