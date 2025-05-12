@@ -1,50 +1,62 @@
-# Welcome to your Expo app 👋
+# Furniture Configuration and Arrangement System
+###### **Note**: This app is still in **development phase**. Some features may be incomplete or unstable.  
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Buy simpler, track in real-time, receive hassle-free.**
 
-## Get started
 
-1. Install dependencies
+## Description
+This React Native application simplifies the process of purchasing and managing furniture orders for both customers and employees. Customers can browse products, place orders, and track their status in real-time. Employees manage active orders, prepare items, and keep customers informed at every step.
 
+### Key Features
+- **Purchase furniture directly from the app**  
+  Browse products, add to cart, and place orders seamlessly within the app.
+- **Real-time order tracking**  
+  Customers see live updates: "Processing," "Preparing," "Ready for Delivery."
+- **Employee order management**  
+  View active orders, select products from the warehouse, and update order statuses.
+- **Smart notifications**  
+  Automated alerts for every status change, reducing manual follow-ups.
+
+## Workflow
+
+### For Customers
+1. **Browse Products** – Explore the furniture catalog.
+2. **Select Items** – Add desired products to your cart.
+3. **Place Order** – Confirm and submit your order.
+4. **Track Status in Real-Time** – Monitor updates like "Processing", "Preparing", or "Ready for Delivery".
+
+### For Employees
+1. **View Active Orders** – See all pending/completed orders.
+2. **Process Order** – Assign and start preparing the order.
+3. **Prepare Items** – Collect products from the warehouse.
+4. **Update Order Status** – Notify customers at every stage (e.g., "Ready for Delivery").
+
+---
+
+## Technologies Used
+| **Frontend** | **Backend** | **Infrastructure & DevOps** |  
+|--------------|-------------|-----------------------------|  
+| React Native | Node.js     | AWS EC2                     |  
+| TypeScript   | Express.js  | GitHub Actions              |  
+| SQLite       | MongoDB     | Docker                      |  
+|              | JWT (Auth)  | Nginx                       |  
+
+---
+
+## Installation
+1. **Clone the repository**
+   ```bash  
+   git clone https://github.com/andreicosmin02/furniture-store-app  
+   cd furniture-store-app
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Run the project
    ```bash
-    npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
