@@ -135,7 +135,6 @@ export default function GenerateRoom() {
 
   return (
     <View style={styles.container}>
-      <TopBar />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>Design Your Room</Text>
         <Text style={styles.description}>

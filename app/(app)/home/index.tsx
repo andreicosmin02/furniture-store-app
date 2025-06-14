@@ -7,6 +7,7 @@ import { View, Text, ScrollView, SafeAreaView, StyleSheet, ActivityIndicator } f
 import FurnitureCategory from "@/app/components/FurnitureCategory";
 import Button from "@/app/components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ImageBackground, TouchableOpacity, Image } from "react-native";
 
 // Update the Category interface
 interface Category {
@@ -67,13 +68,17 @@ export default function Home() {
                     <TopBar/>
 
                     <View style={styles.generateContainer}>
-                    <Button 
-                        onPress={() => router.push('/generate-room')}
-                        style={styles.generateButton}
-                    >
-                        <MaterialIcons name="image" size={24} color="white" style={styles.buttonIcon} />
-                        Generate Room Design
-                    </Button>
+                        <TouchableOpacity onPress={() => router.push('/generate-room')}>
+                            <ImageBackground
+                            source={require('../../../assets/images/generate.jpeg')}
+                            style={styles.generateImage}
+                            imageStyle={{ borderRadius: 16 }}
+                            >
+                            <View style={styles.generateOverlay}>
+                                <Text style={styles.generateText}>Design Your Dream Room Now</Text>
+                            </View>
+                            </ImageBackground>
+                        </TouchableOpacity>
                     </View>
 
                     <Text style={styles.categoriesText}>Categories</Text>
@@ -152,5 +157,28 @@ const styles = StyleSheet.create({
     },
     buttonIcon: {
         marginRight: 10,
+    },
+    generateImage: {
+        width: '100%',
+        height: 200,
+        justifyContent: 'flex-end',
+        borderRadius: 16,
+        overflow: 'hidden',
+    },
+    
+    generateOverlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        height: '100%',
+        paddingVertical: 75,
+        paddingInline: 100,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+    },
+    
+    generateText: {
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
