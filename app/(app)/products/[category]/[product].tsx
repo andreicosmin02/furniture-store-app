@@ -1,11 +1,4 @@
 import { useEffect, useState } from "react";
-import Button from "@/app/components/Button";
-import ImageWithLoader from "@/app/components/ImageWithLoader";
-import TopBar from "@/app/components/TopBar";
-import Colors from "@/app/constants/Colors";
-import { useCartStore } from "@/app/data/cartStore";
-import { Product } from "@/app/types/product";
-import { useLocalSearchParams } from "expo-router";
 import {
   SafeAreaView,
   ScrollView,
@@ -13,7 +6,15 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
+import Button from "@/app/components/Button";
+import ImageWithLoader from "@/app/components/ImageWithLoader";
+import TopBar from "@/app/components/TopBar";
+import Colors from "@/app/constants/Colors";
+import { useCartStore } from "@/app/data/cartStore";
+import { Product } from "@/app/types/product";
+import { useLocalSearchParams } from "expo-router";
 
 const formatProductDescription = (description: string) => {
   const normalized = description.replace(/\s{2,}/g, "\n");
@@ -63,6 +64,7 @@ export default function ProductScreen() {
   const addToCart = useCartStore((state) => state.addToCart);
   const [productObject, setProductObject] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -87,6 +89,9 @@ export default function ProductScreen() {
       </View>
     );
   }
+
+  const allDescriptionElements = formatProductDescription(productObject.long_description);
+  const visibleDescription = descriptionExpanded ? allDescriptionElements : allDescriptionElements.slice(0, 2);
 
   return (
     <View style={styles.container}>
@@ -117,11 +122,18 @@ export default function ProductScreen() {
               Add to cart
             </Button>
           </View>
+          <Pressable onPress={() => setDescriptionExpanded((prev) => !prev)} hitSlop={10}>
+            <View style={styles.descriptionContainer}>
+                <Text style={styles.longDescriptionHeader}>Description</Text>
 
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.longDescriptionHeader}>Description</Text>
-            {formatProductDescription(productObject.long_description)}
-          </View>
+                {visibleDescription}
+
+                
+                <Text style={styles.readMoreText}>
+                    {descriptionExpanded ? "Show Less ▲" : "Read More ▼"}
+                </Text>
+            </View>
+          </Pressable>
         </SafeAreaView>
       </ScrollView>
     </View>
@@ -233,5 +245,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontStyle: "italic",
     color: Colors.primaryText,
+  },
+  readMoreText: {
+    marginTop: 10,
+    textAlign: "right",
+    color: Colors.buttonBackground,
+    fontSize: 13,
+    opacity: 0.8,
   },
 });
