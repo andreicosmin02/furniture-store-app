@@ -24,12 +24,12 @@ export const useCartStore = create<CartState>()(
             addToCart: (product) =>
                 set((state) => {
                     const existingItem = state.items.find(
-                        (item) => item.product.id === product.id
+                        (item) => item.product._id === product._id
                     );
                     if (existingItem) {
                         return {
                             items: state.items.map((item) =>
-                                item.product.id === product.id
+                                item.product._id === product._id
                                     ? { ...item, quantity: item.quantity + 1 }
                                     : item
                             ),
@@ -42,14 +42,14 @@ export const useCartStore = create<CartState>()(
             removeFromCart: (productId) =>
                 set((state) => ({
                     items: state.items.filter(
-                        (item) => item.product.id !== productId
+                        (item) => item.product._id !== productId
                     ),
                 })),
             clearCart: () => set({ items: [] }),
             incrementQuantity: (productId) =>
                 set((state) => ({
                     items: state.items.map((item) =>
-                        item.product.id === productId
+                        item.product._id === productId
                             ? { ...item, quantity: item.quantity + 1 }
                             : item
                     ),
@@ -57,7 +57,7 @@ export const useCartStore = create<CartState>()(
             decrementQuantity: (productId) =>
                 set((state) => ({
                     items: state.items.map((item) => {
-                        if (item.product.id === productId) {
+                        if (item.product._id === productId) {
                             const newQuantity = item.quantity - 1;
                             if (newQuantity <= 0) {
                                 return null;

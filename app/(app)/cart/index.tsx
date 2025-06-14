@@ -17,17 +17,17 @@ export default function Cart() {
     const total = items.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
     const renderCartItem = ({ item }: { item: CartItem }) => {
-        const pathToProduct: RelativePathString = `products/${item.product.category}/${item.product.id}` as RelativePathString;
+        const pathToProduct: RelativePathString = `products/${item.product.category}/${item.product._id}` as RelativePathString;
         return (
             <View style={styles.itemContainer}>
-                {item.product.imageSource && (
+                {item.product.image && (
                     <Pressable
                         onPress={() => {
                             router.navigate(pathToProduct)
                         }}
                     >
                         <ImageWithLoader
-                            source={item.product.imageSource}
+                            source={item.product.image}
                             style={styles.itemImage}
                             resizeMode="contain"
                         />
@@ -46,7 +46,7 @@ export default function Cart() {
                     <View style={styles.quantityContainer}>
                         <Pressable
                             style={styles.quantityButton}
-                            onPress={() => useCartStore.getState().decrementQuantity(item.product.id)}
+                            onPress={() => useCartStore.getState().decrementQuantity(item.product._id)}
                         >
                             <Text style={styles.quantityButtonText}>-</Text>
                         </Pressable>
@@ -55,7 +55,7 @@ export default function Cart() {
 
                         <Pressable
                             style={styles.quantityButton}
-                            onPress={() => useCartStore.getState().incrementQuantity(item.product.id)}
+                            onPress={() => useCartStore.getState().incrementQuantity(item.product._id)}
                         >
                             <Text style={styles.quantityButtonText}>+</Text>
                         </Pressable>
@@ -64,7 +64,7 @@ export default function Cart() {
 
                 <Pressable
                     style={styles.removeButton}
-                    onPress={() => useCartStore.getState().removeFromCart(item.product.id)}
+                    onPress={() => useCartStore.getState().removeFromCart(item.product._id)}
                 >
                     <Text style={styles.removeText}>×</Text>
                 </Pressable>
@@ -89,7 +89,7 @@ export default function Cart() {
                             <FlatList
                                 data={items}
                                 renderItem={renderCartItem}
-                                keyExtractor={(item) => item.product.id}
+                                keyExtractor={(item) => item.product._id}
                                 scrollEnabled={false}
                             />
 

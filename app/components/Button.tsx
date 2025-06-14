@@ -19,15 +19,15 @@ export default function Button({
 }: ButtonProps) {
     return (
         <Pressable
-        onPress={onPress}
-        disabled={disabled}
-        style={({ pressed }) => [
-            styles.base,
-            style,
-            pressed && styles.pressed,
-            disabled && styles.disabled
-        ]}
-        hitSlop={10} // Exapands touch area without visual change
+            onPress={onPress}
+            disabled={disabled}
+            style={({ pressed }) => [
+                styles.base,
+                style,
+                pressed && styles.pressed,
+                disabled && styles.disabled
+            ]}
+            hitSlop={10} // Exapands touch area without visual change
         >
             <Text style={[styles.text, textStyle]}>{children}</Text>
         </Pressable>

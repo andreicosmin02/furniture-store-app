@@ -6,7 +6,7 @@ export interface Category {
   redirectPath: RelativePathString;
 }
 
-// ✅ Fetch random product for each category
+// Fetch random product for each category
 export const fetchCategoriesWithImages = async (): Promise<Category[]> => {
   try {
     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}products/get/random-per-category`);

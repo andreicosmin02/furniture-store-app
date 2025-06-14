@@ -1,10 +1,12 @@
 import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
 import { fetchCategoriesWithImages } from "@/app/services/api";
-import { RelativePathString } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, ActivityIndicator } from "react-native";
 import FurnitureCategory from "@/app/components/FurnitureCategory";
+import Button from "@/app/components/Button";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // Update the Category interface
 interface Category {
@@ -63,6 +65,17 @@ export default function Home() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.safeAreaView}>
                     <TopBar/>
+
+                    <View style={styles.generateContainer}>
+                    <Button 
+                        onPress={() => router.push('/generate-room')}
+                        style={styles.generateButton}
+                    >
+                        <MaterialIcons name="image" size={24} color="white" style={styles.buttonIcon} />
+                        Generate Room Design
+                    </Button>
+                    </View>
+
                     <Text style={styles.categoriesText}>Categories</Text>
                     
                     {categories.map((category, index) => (
@@ -126,5 +139,17 @@ const styles = StyleSheet.create({
         color: Colors.error,
         fontSize: 16,
         textAlign: 'center',
-    }
+    },
+    generateContainer: {
+        marginHorizontal: 10,
+        marginBottom: 20,
+    },
+    generateButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonIcon: {
+        marginRight: 10,
+    },
 });

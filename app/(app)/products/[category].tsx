@@ -1,90 +1,95 @@
+import { useEffect, useState } from "react";
 import FurnitureProduct from "@/app/components/FurnitureProduct";
 import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
-import {products} from "@/app/data/products";
-import {RelativePathString, useLocalSearchParams} from "expo-router";
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View, LogBox} from "react-native";
+import { RelativePathString, useLocalSearchParams } from "expo-router";
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 
 export default function ProductsScreen() {
-    const { category } = useLocalSearchParams();
-    const categoryCapitalized: string = category[0].toUpperCase() + category.slice(1);
-    const products = getProductsByCategory(category.toString());
-    LogBox.ignoreAllLogs()
+  const { category } = useLocalSearchParams();
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const categoryCapitalized: string = category[0].toUpperCase() + category.slice(1);
 
-    return (
-        <View
-            style={styles.container}
-        >
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <SafeAreaView style={styles.safeAreaView}>
-                    <TopBar/>
-                    {/* <ImageWithLoader
-                        style={styles.homeImage}
-                        source={require('../../../assets/images/home_image.jpg')}
-                    /> */}
-                    <Text style={styles.categoriesText}>{ categoryCapitalized }</Text>
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}products/category/${category}`);
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                    <FlatList
-                        data={products}
-                        renderItem={({ item }) => (
-                            <FurnitureProduct
-                                redirectPath={('./' + category + '/' + item.id) as RelativePathString}
-                                image={item.imageSource}
-                                productName={item.name}
-                                productDescription={item.short_description}
-                                productPrice={item.price}
-                            />
-                        )}
-                        keyExtractor={item => item.id}
-                        // numColumns={2}
-                        contentContainerStyle={styles.categoriesList}
-                    />
-                </SafeAreaView>
-            </ScrollView>
-        </View>
-    )
+    fetchProducts();
+  }, [category]);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <SafeAreaView style={styles.safeAreaView}>
+          <TopBar />
+          <Text style={styles.categoriesText}>{categoryCapitalized}</Text>
+
+          {loading ? (
+            <ActivityIndicator size="large" color={Colors.buttonBackground} />
+          ) : (
+            <FlatList
+              data={products}
+              renderItem={({ item }) => (
+                <FurnitureProduct
+                  redirectPath={
+                    (`./${category}/${item._id}` as RelativePathString)
+                  }
+                  image={{ uri: `${process.env.EXPO_PUBLIC_API_URL}products/${item._id}/image` }}
+                  productName={item.name}
+                  productDescription={item.short_description}
+                  productPrice={item.price}
+                />
+              )}
+              keyExtractor={(item) => item._id}
+              contentContainerStyle={styles.categoriesList}
+            />
+          )}
+        </SafeAreaView>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: Colors.primaryBackground,
-        flex: 1,
-        paddingInline: 10
-    },
-    scrollContainer: {
-        flexGrow: 1,
-        alignItems: 'center',
-    },
-    safeAreaView: {
-        maxWidth: 400,
-        minWidth: 200,
-        // width: '100%',
-    },
-    homeImage: {
-        maxWidth: 400,
-        minWidth: 200,
-        width: '100%',
-        alignSelf: 'center',
-        height: 175,
-        marginBottom: 20,
-        borderRadius: 15
-    },
-    categoriesList: {
-        width: '100%'
-    },
-    categoriesText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: Colors.buttonBackground,
-        marginLeft: 10,
-        marginBottom: 10,
-    }
-})
-
-// Filtering functions
-const getProductsByCategory = (category: string) => {
-    // Replace with your actual data source
-    return products.filter(
-        product => product.category.toLowerCase() === category.toLowerCase()
-    );
-};
+  container: {
+    backgroundColor: Colors.primaryBackground,
+    flex: 1,
+    paddingInline: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+  },
+  safeAreaView: {
+    maxWidth: 400,
+    minWidth: 200,
+  },
+  categoriesList: {
+    width: "100%",
+  },
+  categoriesText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.buttonBackground,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+});

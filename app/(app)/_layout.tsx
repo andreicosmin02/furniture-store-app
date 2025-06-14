@@ -96,6 +96,14 @@ export default function AppLayout() {
                         headerTitleAlign: 'center'
                     }}
                 />
+                <Stack.Screen
+                name="generate-room/index"
+                options={{
+                    title: 'Generate Room Design',
+                    headerRight: returnHome,
+                    headerTitleAlign: 'center'
+                }}
+                />
             </Stack>
         </>
     );
