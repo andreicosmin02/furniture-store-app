@@ -8,21 +8,18 @@ import { ActivityIndicator, View, StyleSheet } from 'react-native';
 export default function AuthLayout() {
     const { token, isLoading } = useAuthStore();
 
-    useEffect(() => {
-      if (!isLoading && !token) {
-        router.replace('/login');
-      }
-    }, [token, isLoading]);
-  
     if (isLoading) {
-      return <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.buttonBackground} />
-      </View>;
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={Colors.buttonBackground} />
+        </View>
+      );
     }
-  
-    if (!token) {
-      return <Redirect href="/login" />;
+
+    if (token) {
+      return <Redirect href="/(app)/home" />;
     }
+
 
     return (
         <>

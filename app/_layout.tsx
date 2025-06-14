@@ -4,7 +4,6 @@ import AuthInitializer from '@/app/components/AuthInitializer';
 export default function RootLayout() {
   return (
     <>
-      <AuthInitializer />
       <Slot />
     </>
   );

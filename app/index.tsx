@@ -1,10 +1,12 @@
 import { Redirect } from "expo-router";
 import { useEffect } from "react";
-import AuthInitializer from "./components/AuthInitializer";
+import { useAuthStore } from "@/app/data/authStore";
 
 export default function Index() {
+  const { initialize, token, isLoading } = useAuthStore();
+
   useEffect(() => {
-    console.log(process.env.EXPO_PUBLIC_API_URL)
+    initialize();
     const checkHealth = async () => {
       try {
         const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}health`);
@@ -14,8 +16,12 @@ export default function Index() {
         console.error('Health check failed:', error);
       }
     };
-
     checkHealth();
   }, []);
-  return <AuthInitializer />;
+
+  if (isLoading) {
+    return null;
+  }
+
+  return token ? <Redirect href="/(app)/home" /> : <Redirect href="/login" />;
 }

@@ -1,28 +1,29 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import FancyInput from "../components/FancyInput";
 import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { Colors } from "../constants/Colors";
+import { useAuthStore } from "../data/authStore";
 
 export default function Register() {
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [error, setError] = useState('')
-    
-    const handleRegister = () => {
-        if (
-            !firstName ||
-            !lastName ||
-            !email ||
-            !password ||
-            !confirmPassword
-        ) {
+    const { login } = useAuthStore();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleRegister = async () => {
+        // Reset error state
+        setError('');
+        
+        // Validate inputs
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
             setError("Please fill in all the fields");
             return;
         }
@@ -33,7 +34,7 @@ export default function Register() {
         }
 
         if (!isValidPassword(password)) {
-            setError("Weak password");
+            setError("Password must be at least 6 characters");
             return;
         }
 
@@ -41,16 +42,49 @@ export default function Register() {
             setError("Passwords do not match");
             return;
         }
-        // TODO: Register logic
 
-        router.replace('/(app)/home')
+        try {
+            setIsLoading(true);
+            
+            // Create customer registration payload
+            const payload = {
+                firstName,
+                lastName,
+                email,
+                password
+            };
+
+            // Make API call to register customer
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}auth/register/customer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Registration failed');
+            }
+
+            // If registration is successful, automatically log the user in
+            await login(email, password);
+            
+            // Redirect to home after successful login
+            router.replace('/(app)/home');
+        } catch (err: any) {
+            setError(err.message || 'Registration failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <SafeAreaView style={styles.container}>
-                    {/* <Text style={styles.header}>Register Screen</Text> */}
                     <ImageWithLoader 
                         style={styles.homeImage}
                         source={require('../../assets/images/register_page.jpg')}
@@ -100,8 +134,13 @@ export default function Register() {
                         error={error}
                         icon="lock"
                     />
-                    <Button onPress={handleRegister}>Register</Button>
-                    <Link href='/login' style={{ color: Colors.primaryText, margin: 10, textAlign:"center" }}>
+                    <Button 
+                        onPress={handleRegister}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Creating Account...' : 'Register'}
+                    </Button>
+                    <Link href='/login' style={styles.loginLink}>
                         You have an account? Log in.
                     </Link>
                     {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -114,22 +153,12 @@ export default function Register() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.primaryBackground,//'#EBDAC2',
+        backgroundColor: Colors.primaryBackground,
     },
     scrollContainer: {
         flexGrow: 1,
         paddingHorizontal: 20,
         paddingVertical: 30,
-    },
-    header: {
-        width: '100%',
-        maxWidth: 400,
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: Colors.primaryText,
-        textAlign: 'center',
-        marginBottom: 20,
-        alignSelf: 'center'
     },
     homeImage: {
         width: '100%',
@@ -139,15 +168,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 15
     },
-    login: {
-        maxWidth: 400,
-        margin: 3,
-        borderRadius: 15,
-        alignSelf: 'center',
+    loginLink: {
+        color: Colors.primaryText,
+        margin: 10,
+        textAlign: "center",
     },
     errorText: {
-        color: 'red',
+        color: Colors.error,
         textAlign: 'center',
         marginBottom: 10,
     }
-})
+});
