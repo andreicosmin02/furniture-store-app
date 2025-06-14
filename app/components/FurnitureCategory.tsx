@@ -1,36 +1,50 @@
 import { RelativePathString, router } from "expo-router";
 import { Pressable, View, Text, StyleSheet } from "react-native";
-import ImageWithLoader from "./ImageWithLoader";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import ImageWithLoader from "./ImageWithLoader";
+import { fetchProductImage } from "@/app/services/api";
 
 interface FurnitureCategoryProps {
     redirectPath: RelativePathString;
-    image: any;
     categoryName: string;
+    imageProductId: string | null;
 };
 
-export default function FurnitureCategory({redirectPath, image, categoryName}: FurnitureCategoryProps) {
+export default function FurnitureCategory({
+    redirectPath,
+    categoryName,
+    imageProductId
+}: FurnitureCategoryProps) {
     const handlePress = () => {
         router.navigate(redirectPath);
     }
 
     return (
-        <View>
-
         <Pressable onPress={handlePress} style={styles.container}>
-            <View style={styles.imageContainer}>
-                <ImageWithLoader source={image} style={styles.image}/>
+            {imageProductId ? (
+                <ImageWithLoader
+                    style={styles.image}
+                    source={{ uri: fetchProductImage(imageProductId) }}
+                />
+            ) : (
+                <View style={styles.placeholderContainer}>
+                    <MaterialIcons 
+                        name="image" 
+                        size={40} 
+                        color={Colors.placeHolderText}
+                    />
+                </View>
+            )}
+            <View style={styles.textContainer}>
+                <Text style={styles.categoryName}>{categoryName}</Text>
             </View>
-            <Text style={styles.categoryName}>{categoryName}</Text>
             <MaterialIcons
                 name="arrow-forward"
                 size={20}
                 style={styles.arrow}
             />
         </Pressable>
-        </View>
-
     )
 }
 
@@ -38,28 +52,38 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         margin: 5,
-        padding: 10,
+        padding: 15,
         backgroundColor: Colors.inputBackground,
         borderRadius: 10,
-        borderColor: Colors.border
-    },
-    imageContainer: {
-        marginRight: 10,
+        borderColor: Colors.border,
+        width: '100%'
     },
     image: {
         width: 75,
         height: 75,
         borderRadius: 7,
+        marginRight: 10,
+    },
+    placeholderContainer: {
+        width: 75,
+        height: 75,
+        backgroundColor: Colors.primaryBackground,
+        borderRadius: 7,
+        marginRight: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textContainer: {
+        flex: 1,
     },
     categoryName: {
-        margin: 10,
         fontSize: 16,
         fontWeight: 'bold',
         color: Colors.primaryText
     },
     arrow: {
-        marginLeft: 'auto',
         color: Colors.primaryText
     }
 });
