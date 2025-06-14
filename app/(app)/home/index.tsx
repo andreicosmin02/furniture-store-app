@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     safeAreaView: {
         maxWidth: 400,
         minWidth: 200,
+        paddingTop: 30
         // width: '100%',
     },
     categoriesText: {
