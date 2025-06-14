@@ -5,7 +5,7 @@ import { Colors } from '../constants/Colors';
 
 interface FancyInputProps extends TextInputProps {
     label?: string;
-    error?: string;
+    error?: string | null;
     icon?: keyof typeof MaterialIcons.glyphMap;
 } // Inherits all TextInput props
 

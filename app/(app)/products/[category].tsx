@@ -3,14 +3,13 @@ import TopBar from "@/app/components/TopBar";
 import Colors from "@/app/constants/Colors";
 import {products} from "@/app/data/products";
 import {RelativePathString, useLocalSearchParams} from "expo-router";
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View, LogBox} from "react-native";
 
 export default function ProductsScreen() {
     const { category } = useLocalSearchParams();
     const categoryCapitalized: string = category[0].toUpperCase() + category.slice(1);
     const products = getProductsByCategory(category.toString());
-    // console.log(products)
-
+    LogBox.ignoreAllLogs()
 
     return (
         <View
@@ -24,7 +23,7 @@ export default function ProductsScreen() {
                         source={require('../../../assets/images/home_image.jpg')}
                     /> */}
                     <Text style={styles.categoriesText}>{ categoryCapitalized }</Text>
-                    
+
                     <FlatList
                         data={products}
                         renderItem={({ item }) => (

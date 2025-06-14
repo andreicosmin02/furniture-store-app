@@ -1,17 +1,21 @@
 import { Redirect } from "expo-router";
-import { Text, View } from "react-native";
+import { useEffect } from "react";
+import AuthInitializer from "./components/AuthInitializer";
 
 export default function Index() {
-  return (
-    // <View
-    //   style={{
-    //     flex: 1,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //   }}
-    // >
-    //   <Text>Edit app/index.tsx to edit this screen.</Text>
-    // </View>
-    <Redirect href='/login' />
-  );
+  useEffect(() => {
+    console.log(process.env.EXPO_PUBLIC_API_URL)
+    const checkHealth = async () => {
+      try {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}health`);
+        const data = await response.json();
+        console.log('Health check:', data);
+      } catch (error) {
+        console.error('Health check failed:', error);
+      }
+    };
+
+    checkHealth();
+  }, []);
+  return <AuthInitializer />;
 }

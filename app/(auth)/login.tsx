@@ -6,32 +6,22 @@ import Button from "../components/Button";
 import ImageWithLoader from "../components/ImageWithLoader";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { Colors } from "../constants/Colors";
+import { useAuthStore } from "../data/authStore";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
+    const { login, isLoading, error } = useAuthStore();
 
-    const handleLogin = () => {
-        if (!email || !password) {
-            setError('Please fill in all fields');
-            return;
+    const handleLogin = async () => {
+        try {
+            await login(email, password);
+            router.replace('/(app)/home');
+        } catch (error) {
+            console.error('Login error: ', error)
         }
-
-        if (!isValidEmail(email)) {
-            setError("Please enter a valid email address");
-            return;
-        }
-
-        if (!isValidPassword(password)) {
-            setError("Weak password");
-            return;
-        }
-
-        // TODO: Login Logic
-
-        router.replace('/(app)/home');
-    }
+    };
 
     return (
         <View
@@ -63,7 +53,12 @@ export default function Login() {
                         error={error}
                         icon='lock'
                     />
-                    <Button onPress={handleLogin}>Log In</Button>
+                    <Button 
+                        onPress={handleLogin}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Logging in...': 'Log In'}
+                    </Button>
                     <Link href='/register' style={{ color: Colors.primaryText, margin: 10, textAlign:"center" }}>
                         Don't you have an account? Sign up.
                     </Link>

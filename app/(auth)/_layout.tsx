@@ -1,8 +1,29 @@
-import { Stack } from 'expo-router';
+import { Redirect, router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import Colors from '../constants/Colors';
+import { useAuthStore } from '../data/authStore';
+import { useEffect } from 'react';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
 export default function AuthLayout() {
+    const { token, isLoading } = useAuthStore();
+
+    useEffect(() => {
+      if (!isLoading && !token) {
+        router.replace('/login');
+      }
+    }, [token, isLoading]);
+  
+    if (isLoading) {
+      return <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.buttonBackground} />
+      </View>;
+    }
+  
+    if (!token) {
+      return <Redirect href="/login" />;
+    }
+
     return (
         <>
             <StatusBar style="dark" />
@@ -31,3 +52,12 @@ export default function AuthLayout() {
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: Colors.primaryBackground,
+    },
+  });

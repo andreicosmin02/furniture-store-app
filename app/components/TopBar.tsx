@@ -54,7 +54,7 @@ export default function TopBar() {
                     </View>
                 </Pressable>
                 <Pressable onPress={() => router.navigate('/(app)/account')} style={styles.iconButton}>
-                    <MaterialIcons
+                   <MaterialIcons
                         name="person"
                         size={20}
                         style={styles.topbarButton}

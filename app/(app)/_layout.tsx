@@ -1,9 +1,23 @@
-import { router, Stack, Tabs } from "expo-router";
-import { Pressable, StatusBar, ViewStyle } from "react-native";
+import { Redirect, router, Stack, Tabs } from "expo-router";
+import { ActivityIndicator, Pressable, StatusBar, View, ViewStyle, StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAuthStore } from "../data/authStore";
 
 export default function AppLayout() {
+    const { token, isLoading } = useAuthStore();
+
+    if (isLoading) {
+        return (
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={Colors.buttonBackground} />
+        </View>
+        );
+    }
+
+    if (!token) {
+        return <Redirect href="/login" />;
+    }
 
     const returnHome = () => {
         return (
@@ -86,3 +100,12 @@ export default function AppLayout() {
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: Colors.primaryBackground,
+    },
+  });
