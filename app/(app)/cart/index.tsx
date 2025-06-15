@@ -12,7 +12,11 @@ import {
   Pressable,
   FlatList,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard
 } from "react-native";
 import useCartStore, { CartItem } from "@/app/data/cartStore";
 import { Product } from "@/app/types/product";
@@ -41,153 +45,135 @@ export default function Cart() {
     
     return (
       <View style={styles.itemContainer}>  
-        <Pressable
-            onPress={() => router.navigate(`products/${item.product.category}/${item.product._id}` as RelativePathString)}
-        >
-            <ImageWithLoader
-                source={{ uri: `${process.env.EXPO_PUBLIC_API_URL}products/${item.product._id}/image` }}
-                style={styles.itemImage}
-            />
-        </Pressable>
-        <View style={styles.itemDetails}>
-          <Pressable onPress={() => router.navigate(`products/${item.product.category}/${item.product._id}` as RelativePathString)}>
+        <View style={styles.itemRow}>
+    {/* Product Image */}
+    <Pressable
+      style={styles.imageWrapper}
+      onPress={() => router.navigate(`products/${item.product.category}/${item.product._id}` as RelativePathString)}
+    >
+      <ImageWithLoader
+        source={{ uri: `${process.env.EXPO_PUBLIC_API_URL}products/${item.product._id}/image` }}
+        style={styles.itemImage}
+      />
+    </Pressable>
+
+    {/* Product Details */}
+    <View style={styles.detailsWrapper}>
+        <Pressable onPress={() => router.navigate(`products/${item.product.category}/${item.product._id}` as RelativePathString)}>
             <Text style={styles.itemName}>{item.product.name}</Text>
             <Text style={styles.itemPrice}>{item.product.price.toFixed(2)} Lei</Text>
-          </Pressable>
-          
-          {/* Quantity Controls */}
-          <View style={styles.quantityContainer}>
+        </Pressable>
+
+        <View style={styles.quantityContainer}>
             <Pressable
-              style={styles.quantityButton}
-              onPress={() => useCartStore.getState().decrementQuantity(item.product._id)}
+            style={styles.quantityButton}
+            onPress={() => useCartStore.getState().decrementQuantity(item.product._id)}
             >
-              <Text style={styles.quantityButtonText}>-</Text>
+            <Text style={styles.quantityButtonText}>-</Text>
             </Pressable>
 
             <Text style={styles.quantityText}>{item.quantity}</Text>
 
             <Pressable
-              style={styles.quantityButton}
-              onPress={() => useCartStore.getState().incrementQuantity(item.product._id)}
+            style={styles.quantityButton}
+            onPress={() => useCartStore.getState().incrementQuantity(item.product._id)}
             >
-              <Text style={styles.quantityButtonText}>+</Text>
+            <Text style={styles.quantityButtonText}>+</Text>
             </Pressable>
-          </View>
-          
-          {/* Customization Display */}
-          {item.customization && (
-            <View style={styles.customizationContainer}>
-                {item.customization.generatedRoomImage ? (
-                <View style={styles.customizationImageWrapper}>
-                    <Text style={styles.customizationLabel}>For Your Room</Text>
-                    <ImageWithLoader
-                    source={{ uri: item.customization.generatedRoomImage }}
-                    style={styles.customizationImage}
-                    />
-                </View>
-                ) : item.customization.generatedImage ? (
-                <View style={styles.customizationImageWrapper}>
-                    <Text style={styles.customizationLabel}>Custom Furniture</Text>
-                    <Image
-                    source={{ uri: item.customization.generatedImage }}
-                    style={styles.customizationImage}
-                    />
-                </View>
-                ) : null}
-              
-              {/* Show full analysis */}
-              {item.customization.analysis && (
-                <Pressable 
-                  onPress={() => setExpanded(!expanded)}
-                  style={styles.analysisToggle}
-                >
-                  <Text style={styles.analysisLabel}>
-                    {expanded ? '▲ Hide Full Analysis' : '▼ Show Full Analysis'}
-                  </Text>
-                </Pressable>
-              )}
-              
-              {expanded && item.customization.analysis && (
-                <View style={styles.analysisContainer}>
-                  {/* Furniture Analysis */}
-                  {item.customization.analysis.furnitureAnalysis && (
-                    <View style={styles.analysisSection}>
-                      <Text style={styles.analysisTitle}>Furniture Analysis</Text>
-                      {Object.entries(item.customization.analysis.furnitureAnalysis).map(([key, value]) => (
-                        <Text key={key} style={styles.analysisText}>
-                          <Text style={styles.analysisKey}>{key}:</Text> {String(value)}
-                        </Text>
-                      ))}
-                    </View>
-                  )}
-                  
-                  {/* Room Analysis */}
-                  {item.customization.analysis.roomAnalysis && (
-                    <View style={styles.analysisSection}>
-                      <Text style={styles.analysisTitle}>Room Analysis</Text>
-                      {Object.entries(item.customization.analysis.roomAnalysis).map(([key, value]) => (
-                        <Text key={key} style={styles.analysisText}>
-                          <Text style={styles.analysisKey}>{key}:</Text> {String(value)}
-                        </Text>
-                      ))}
-                    </View>
-                  )}
-                  
-                  {/* Customization Recommendations */}
-                  {item.customization.analysis.customizationRecommendations && (
-                    <View style={styles.analysisSection}>
-                      <Text style={styles.analysisTitle}>Customization Recommendations</Text>
-                      {Object.entries(item.customization.analysis.customizationRecommendations).map(([category, options]) => (
-                        <View key={category} style={styles.recommendationCategory}>
-                          <Text style={styles.recommendationTitle}>{category}:</Text>
-                          {Array.isArray(options) && options.map((opt, index) => (
-                            <Text key={index} style={styles.recommendationItem}>• {opt}</Text>
-                          ))}
-                        </View>
-                      ))}
-                    </View>
-                  )}
-                  
-                  {/* Placement Suggestions */}
-                  {item.customization.analysis.placementSuggestions && (
-                    <View style={styles.analysisSection}>
-                      <Text style={styles.analysisTitle}>Placement Suggestions</Text>
-                      {item.customization.analysis.placementSuggestions.map((suggestion: string, index: number) => (
-                        <Text key={index} style={styles.placementItem}>• {suggestion}</Text>
-                      ))}
-                    </View>
-                  )}
-                  
-                  {/* Accessory Recommendations */}
-                  {item.customization.analysis.accessoryRecommendations && (
-                    <View style={styles.analysisSection}>
-                      <Text style={styles.analysisTitle}>Accessory Recommendations</Text>
-                      {item.customization.analysis.accessoryRecommendations.map((accessory: string, index: number) => (
-                        <Text key={index} style={styles.accessoryItem}>• {accessory}</Text>
-                      ))}
-                    </View>
-                  )}
-                  
-                  {/* Summary and Confidence */}
-                  <View style={styles.analysisSection}>
-                    <Text style={styles.analysisTitle}>Summary</Text>
-                    <Text style={styles.analysisText}>{item.customization.analysis.summary}</Text>
-                    <Text style={styles.confidenceScore}>
-                      Confidence Score: {item.customization.analysis.confidenceScore || 'N/A'}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          )}
+        </View>
         </View>
 
-        <Pressable
-          style={styles.removeButton}
-          onPress={() => useCartStore.getState().removeFromCart(item.product._id)}
-        >
-          <Text style={styles.removeText}>×</Text>
+        {/* Remove Button */}
+        <Pressable style={styles.removeWrapper} onPress={() => useCartStore.getState().removeFromCart(item.product._id)}>
+        <Text style={styles.removeText}>×</Text>
         </Pressable>
+    </View>
+  
+        {/* Customization Display - Now placed below all product info */}
+        {item.customization && (
+          <View style={styles.fullWidthCustomizationContainer}>
+            {item.customization.generatedRoomImage ? (
+              <View style={styles.customizationImageWrapper}>
+                <Text style={styles.customizationLabel}>For Your Room</Text>
+                <ImageWithLoader
+                  source={{ uri: item.customization.generatedRoomImage }}
+                  style={styles.customizationImage}
+                />
+              </View>
+            ) : item.customization.generatedImage ? (
+              <View style={styles.customizationImageWrapper}>
+                <Text style={styles.customizationLabel}>Custom Furniture</Text>
+                <Image
+                  source={{ uri: item.customization.generatedImage }}
+                  style={styles.customizationImage}
+                />
+              </View>
+            ) : null}
+            
+            {/* Analysis toggle and content */}
+            {item.customization?.analysis && (
+            <>
+                <Pressable 
+                onPress={() => setExpanded(!expanded)}
+                style={styles.analysisToggle}
+                >
+                <Text style={styles.analysisLabel}>
+                    {expanded ? '▲ Hide Room Analysis' : '▼ Show Room Analysis'}
+                </Text>
+                </Pressable>
+                
+                {expanded && (
+                <View style={styles.analysisContainer}>
+                    {/* Furniture Analysis */}
+                    {item.customization.analysis.furnitureAnalysis && (
+                    <View style={styles.analysisSection}>
+                        <Text style={styles.analysisTitle}>Furniture Analysis</Text>
+                        {Object.entries(item.customization.analysis.furnitureAnalysis).map(([key, value]) => (
+                        <Text key={key} style={styles.analysisText}>
+                            <Text style={styles.analysisKey}>{key}:</Text> {String(value)}
+                        </Text>
+                        ))}
+                    </View>
+                    )}
+                    
+                    {/* Room Analysis */}
+                    {item.customization.analysis.roomAnalysis && (
+                    <View style={styles.analysisSection}>
+                        <Text style={styles.analysisTitle}>Room Analysis</Text>
+                        {Object.entries(item.customization.analysis.roomAnalysis).map(([key, value]) => (
+                        <Text key={key} style={styles.analysisText}>
+                            <Text style={styles.analysisKey}>{key}:</Text> {String(value)}
+                        </Text>
+                        ))}
+                    </View>
+                    )}
+                    
+                    {/* Placement Suggestions */}
+                    {item.customization.analysis.placementSuggestions && (
+                    <View style={styles.analysisSection}>
+                        <Text style={styles.analysisTitle}>Placement Suggestions</Text>
+                        {item.customization.analysis.placementSuggestions.map((suggestion: string, index: number) => (
+                        <Text key={index} style={styles.placementItem}>• {suggestion}</Text>
+                        ))}
+                    </View>
+                    )}
+                    
+                    {/* Summary */}
+                    <View style={styles.analysisSection}>
+                    <Text style={styles.analysisTitle}>Summary</Text>
+                    <Text style={styles.analysisText}>{item.customization.analysis.summary}</Text>
+                    {item.customization.analysis.confidenceScore && (
+                        <Text style={styles.confidenceScore}>
+                        Confidence Score: {item.customization.analysis.confidenceScore}
+                        </Text>
+                    )}
+                    </View>
+                </View>
+                )}
+            </>
+            )}
+          </View>
+        )}
       </View>
     );
   };
@@ -258,94 +244,105 @@ export default function Cart() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <SafeAreaView style={styles.safeAreaView}>
-          <TopBar/>
-          
-          {items.length === 0 ? (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Your cart is empty</Text>
-            </View>
-          ) : (
-            <>
-              <FlatList
-                data={items}
-                renderItem={renderCartItem}
-                keyExtractor={(item) => item.product._id}
-                scrollEnabled={false}
-              />
-
-              <View style={styles.totalContainer}>
-                <Text style={styles.totalText}>Total:</Text>
-                <Text style={styles.totalAmount}>{total.toFixed(2)} Lei</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          <SafeAreaView style={styles.safeAreaView}>
+            <TopBar />
+  
+            {items.length === 0 ? (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Your cart is empty</Text>
               </View>
-
-              <View style={styles.deliveryContainer}>
-                <Text style={styles.sectionTitle}>Delivery Information</Text>
-
-                <FancyInput
-                  label="Full Name *"
-                  placeholder="Enter your full name"
-                  icon="person"
-                  value={fullName}
-                  onChangeText={setFullName}
+            ) : (
+              <>
+                <FlatList
+                  data={items}
+                  renderItem={renderCartItem}
+                  keyExtractor={(item) => item.product._id}
+                  scrollEnabled={false}
                 />
-
-                <FancyInput
-                  label="Phone Number *"
-                  placeholder="Enter your phone number"
-                  keyboardType="phone-pad"
-                  icon="phone"
-                  value={phone}
-                  onChangeText={setPhone}
-                />
-
-                <FancyInput
-                  label="Email Address *"
-                  placeholder="Enter your email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  icon="email"
-                  value={email}
-                  onChangeText={setEmail}
-                />
-
-                <FancyInput
-                  label="Delivery Address *"
-                  placeholder="Street, Number, Apartment"
-                  multiline
-                  numberOfLines={3}
-                  icon="home"
-                  value={address}
-                  onChangeText={setAddress}
-                />
-
-                <FancyInput
-                  label="Additional Notes"
-                  placeholder="Special instructions (optional)"
-                  multiline
-                  numberOfLines={2}
-                  icon="notes"
-                  value={notes}
-                  onChangeText={setNotes}
-                />
-
-                <Button
-                  onPress={handlePlaceOrder}
-                  disabled={isPlacingOrder}
-                  style={styles.submitButton}
-                >
-                  {isPlacingOrder 
-                    ? <ActivityIndicator size="small" color="#fff" /> 
-                    : 'Place Order'}
-                </Button>
-              </View>
-            </>
-          )}
-        </SafeAreaView>
-      </ScrollView>
-    </View>
+  
+                <View style={styles.totalContainer}>
+                  <Text style={styles.totalText}>Total:</Text>
+                  <Text style={styles.totalAmount}>{total.toFixed(2)} Lei</Text>
+                </View>
+  
+                <View style={styles.deliveryContainer}>
+                  <Text style={styles.sectionTitle}>Delivery Information</Text>
+  
+                  <FancyInput
+                    label="Full Name *"
+                    placeholder="Enter your full name"
+                    icon="person"
+                    value={fullName}
+                    onChangeText={setFullName}
+                  />
+  
+                  <FancyInput
+                    label="Phone Number *"
+                    placeholder="Enter your phone number"
+                    keyboardType="phone-pad"
+                    icon="phone"
+                    value={phone}
+                    onChangeText={setPhone}
+                  />
+  
+                  <FancyInput
+                    label="Email Address *"
+                    placeholder="Enter your email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    icon="email"
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+  
+                  <FancyInput
+                    label="Delivery Address *"
+                    placeholder="Street, Number, Apartment"
+                    multiline
+                    numberOfLines={3}
+                    icon="home"
+                    value={address}
+                    onChangeText={setAddress}
+                  />
+  
+                  <FancyInput
+                    label="Additional Notes"
+                    placeholder="Special instructions (optional)"
+                    multiline
+                    numberOfLines={2}
+                    icon="notes"
+                    value={notes}
+                    onChangeText={setNotes}
+                  />
+  
+                  <Button
+                    onPress={handlePlaceOrder}
+                    disabled={isPlacingOrder}
+                    style={styles.submitButton}
+                  >
+                    {isPlacingOrder ? (
+                      <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                      'Place Order'
+                    )}
+                  </Button>
+                </View>
+              </>
+            )}
+          </SafeAreaView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -364,23 +361,11 @@ const styles = StyleSheet.create({
     minWidth: 200,
     width: '100%',
   },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: Colors.inputBackground,
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    borderColor: Colors.border,
-  },
   itemImage: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     borderRadius: 8,
     marginRight: 15,
-  },
-  itemDetails: {
-    flex: 1,
   },
   itemName: {
     fontSize: 16,
@@ -427,19 +412,10 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.border,
     paddingTop: 10,
   },
-  customizationImageWrapper: {
-    marginBottom: 15,
-  },
   customizationLabel: {
     fontSize: 14,
     fontWeight: '600',
     color: Colors.buttonBackground,
-    marginBottom: 5,
-  },
-  customizationImage: {
-    width: '100%',
-    aspectRatio: 1,
-    borderRadius: 8,
     marginBottom: 5,
   },
   analysisToggle: {
@@ -557,6 +533,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginTop: 15,
+    marginBottom: 100
   },
   sectionTitle: {
     fontSize: 18,
@@ -571,4 +548,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
+  itemContainer: {
+    backgroundColor: Colors.inputBackground,
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    borderColor: Colors.border,
+  },
+  fullWidthCustomizationContainer: {
+    width: '100%',
+    marginTop: 15,
+    paddingTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  // Update these to make the customization section full width
+  customizationImageWrapper: {
+    width: '75%',
+    alignSelf: 'center',
+    marginBottom: 15,
+  },
+  customizationImage: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: 8,
+  },
+  // Adjust itemDetails to not take full width
+  itemDetails: {
+    flex: 1,
+    marginRight: 10, // Give space for remove button
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  imageWrapper: {
+    marginRight: 10,
+  },
+  detailsWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  removeWrapper: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
 });

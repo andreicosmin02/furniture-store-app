@@ -104,6 +104,11 @@ export default function AppLayout() {
                     headerTitleAlign: 'center'
                 }}
                 />
+                <Stack.Screen name='account/orders' options={{ 
+                    title: 'My Orders',
+                    headerRight: returnHome,
+                    headerTitleAlign: 'center'
+                }}/>
             </Stack>
         </>
     );
