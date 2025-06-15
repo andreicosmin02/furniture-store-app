@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         padding: 3,
-        marginBottom: 5,
+        // marginBottom: 5,
     },
     errorInput: {
         

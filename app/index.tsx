@@ -1,10 +1,14 @@
 import { Redirect } from "expo-router";
 import { useEffect } from "react";
 import { useAuthStore } from "@/app/data/authStore";
+import { LogBox } from 'react-native';
+
 
 export default function Index() {
   const { initialize, token, isLoading } = useAuthStore();
-
+  // if (__DEV__) {
+  //   LogBox.ignoreAllLogs(true);
+  // }
   useEffect(() => {
     initialize();
     const checkHealth = async () => {
