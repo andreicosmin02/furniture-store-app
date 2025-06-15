@@ -119,6 +119,14 @@ export default function AppLayout() {
                         }}
                     />
                 )}
+                <Stack.Screen
+                    name="search"
+                    options={{
+                        title: 'Search Results',
+                        headerRight: returnHome,
+                        headerTitleAlign: 'center'
+                    }}
+                />
             </Stack>
         </>
     );

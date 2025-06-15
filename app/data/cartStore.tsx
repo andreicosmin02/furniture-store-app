@@ -6,10 +6,9 @@ import { Product } from '../types/product'
 export interface CustomizationData {
     analysis?: any;
     customSelections?: Record<string, string>;
-    generatedImage?: string | null;
-    generatedRoomImage?: string | null;
+    generatedImage?: string | null; // This will store either furniture or room image
 }
-  
+
 export interface CartItem {
     product: Product;
     quantity: number;

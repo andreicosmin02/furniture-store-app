@@ -16,7 +16,8 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
-  Keyboard
+  Keyboard,
+  ToastAndroid
 } from "react-native";
 import useCartStore, { CartItem } from "@/app/data/cartStore";
 import { Product } from "@/app/types/product";
@@ -92,11 +93,11 @@ export default function Cart() {
         {/* Customization Display - Now placed below all product info */}
         {item.customization && (
           <View style={styles.fullWidthCustomizationContainer}>
-            {item.customization.generatedRoomImage ? (
+            {item.customization.generatedImage ? (
               <View style={styles.customizationImageWrapper}>
                 <Text style={styles.customizationLabel}>For Your Room</Text>
                 <ImageWithLoader
-                  source={{ uri: item.customization.generatedRoomImage }}
+                  source={{ uri: item.customization.generatedImage }}
                   style={styles.customizationImage}
                 />
               </View>
@@ -190,40 +191,42 @@ export default function Cart() {
     
     setIsPlacingOrder(true);
     
+    
     try {
-      // Prepare order payload
-      const orderPayload = {
-        products: items.map(item => ({
-          product: item.product._id,
-          quantity: item.quantity,
-          // Include customization data if exists
-          ...(item.customization && {
-            furnitureImageBase64: item.customization.generatedImage 
-              ? item.customization.generatedImage.split(',')[1]
-              : undefined,
-            customizationAnalysis: item.customization.analysis 
-              ? JSON.stringify(item.customization.analysis) 
-              : undefined
-          })
-        })),
-        deliveryInfo: {
-          fullName,
-          phone,
-          email,
-          address,
-          notes
-        }
-      };
-      
-      // Send to backend
-      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}orders`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(orderPayload)
-      });
+        // Prepare order payload
+        const orderPayload = {
+            products: items.map(item => ({
+                product: item.product._id,
+                quantity: item.quantity,
+                // Include customization data if exists
+                ...(item.customization && {
+                    furnitureImageBase64: item.customization.generatedImage 
+                        ? item.customization.generatedImage.split(',')[1]
+                        : undefined,
+                    customizationAnalysis: item.customization.analysis 
+                        ? JSON.stringify(item.customization.analysis) 
+                        : undefined
+                })
+            })),
+            deliveryInfo: {
+                fullName,
+                phone,
+                email,
+                address,
+                notes
+            }
+        };
+        
+        // Send to backend
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}orders`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -232,8 +235,13 @@ export default function Cart() {
       
       // Clear cart on success
       clearCart();
+      if (Platform.OS === 'android') {
+        ToastAndroid.show("Your order has been successfully submitted.", ToastAndroid.SHORT);
+      } else {
+        alert("Your order has been successfully submitted.");
+      }
       router.navigate('/home');
-      alert('Order placed successfully!');
+      
       
     } catch (error: any) {
       console.error('Order submission error:', error);

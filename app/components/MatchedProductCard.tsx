@@ -41,9 +41,15 @@ export default function MatchedProductCard({
           <Text style={styles.name}>{displayOrNA(product.name)}</Text>
           <Text style={styles.price}>{displayOrNA(product.price)} Lei</Text>
           <Text style={styles.description}>{displayOrNA(product.short_description)}</Text>
-          <Pressable onPress={onAddToCart} style={styles.cartButton}>
+          <Pressable 
+            onPress={onAddToCart} 
+            style={({ pressed }) => [
+                styles.cartButton,
+                pressed && { backgroundColor: Colors.buttonPressedBackground }  // New brighter color
+            ]}
+            >
             <Text style={styles.cartText}>Add to Cart</Text>
-          </Pressable>
+            </Pressable>
 
           {generatedRoomImage && (
             <View style={styles.generatedRoomContainer}>

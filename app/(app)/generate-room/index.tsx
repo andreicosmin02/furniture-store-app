@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -26,226 +26,264 @@ const STYLE_OPTIONS = [
 ];
 
 export default function GenerateRoom() {
-  const { token } = useAuthStore();
-  const addToCart = useCartStore((state) => state.addToCart);
-
-  const {
-    selectedImage,
-    selectedStyle,
-    generatedImage,
-    matchedProducts,
-    setState,
-    reset,
-  } = useGenerateRoomStore();
-
-  const loadingList = !matchedProducts && selectedImage;
-  const loadingImage = !generatedImage && matchedProducts?.length;
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setState({
-        selectedImage: result.assets[0].uri,
-        generatedImage: null,
-        matchedProducts: [],
+    const { token } = useAuthStore();
+    const addToCart = useCartStore((state) => state.addToCart);
+  
+    const {
+      selectedImage,
+      selectedStyle,
+      generatedImage,
+      matchedProducts,
+      setState,
+      reset,
+    } = useGenerateRoomStore();
+  
+    // State for loading indicators
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [showCartFeedback, setShowCartFeedback] = useState(false);
+  
+    const pickImage = async () => {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
       });
-    }
-  };
-
-  const analyzeRoom = async () => {
-    if (!selectedImage) return;
-
-    setState({ matchedProducts: [], generatedImage: null });
-
-    try {
-      const formData = new FormData();
-      formData.append('roomImage', {
-        uri: selectedImage,
-        name: 'room.jpg',
-        type: 'image/jpeg',
-      } as any);
-      formData.append('style', selectedStyle);
-
-      const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}ai/analyze/room-with-products`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-
-      const analysis = await res.json();
-      const productIds = analysis.selectedProducts.map((p: any) => p.productId);
-
-      const productsRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}products`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const allProducts = await productsRes.json();
-
-      const enriched = allProducts
-        .filter((prod: any) => productIds.includes(prod._id))
-        .map((prod: any) => {
-          const match = analysis.selectedProducts.find((a: any) => a.productId === prod._id);
-          return { ...prod, analysis: match?.analysis };
+  
+      if (!result.canceled) {
+        setState({
+          selectedImage: result.assets[0].uri,
+          generatedImage: null,
+          matchedProducts: [],
         });
-
-      setState({ matchedProducts: enriched });
-    } catch (err) {
-      console.error('Analysis error:', err);
-    }
-  };
-
-  const generateImage = async () => {
-    if (!selectedImage || !matchedProducts?.length) return;
-
-    try {
-      const genFormData = new FormData();
-      genFormData.append('roomImage', {
-        uri: selectedImage,
-        name: 'room.jpg',
-        type: 'image/jpeg',
-      } as any);
-      genFormData.append('style', selectedStyle);
-      genFormData.append(
-        'selectedProductIds',
-        matchedProducts.map((p) => p._id).join(',')
-      );
-
-      const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}ai/generate/room-with-products`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: genFormData,
-      });
-
-      const { image } = await res.json();
-      setState({ generatedImage: `data:image/jpeg;base64,${image}` });
-    } catch (err) {
-      console.error('Image generation failed:', err);
-    }
-  };
-
-  const handleAddToCart = (product: any) => {
-    const customizationData = {
-      analysis: product.analysis,
-      generatedRoomImage: generatedImage,
+      }
     };
-    addToCart(product, customizationData);
-  };
-
-  // Optional: Reset store on mount
-  useEffect(() => {
-    // reset(); // Uncomment if you want to clear previous state each time
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <TopBar />
-        <Text style={styles.title}>Design Your Room</Text>
-        <Text style={styles.description}>
-          Upload a room photo and let us match products + generate a visual.
-        </Text>
-
-        {/* Style Selector */}
-        <View style={styles.styleList}>
-          {STYLE_OPTIONS.map((style) => (
-            <Pressable
-              key={style}
-              onPress={() => setState({ selectedStyle: style })}
-              style={[
-                styles.styleOption,
-                selectedStyle === style && styles.selectedStyleOption,
-              ]}
-            >
-              <Text
+  
+    const analyzeRoom = async () => {
+      if (!selectedImage) return;
+  
+      setIsAnalyzing(true);
+      setState({ matchedProducts: [], generatedImage: null });
+  
+      try {
+        const formData = new FormData();
+        formData.append('roomImage', {
+          uri: selectedImage,
+          name: 'room.jpg',
+          type: 'image/jpeg',
+        } as any);
+        formData.append('style', selectedStyle);
+  
+        const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}ai/analyze/room-with-products`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+  
+        const analysis = await res.json();
+        const productIds = analysis.selectedProducts.map((p: any) => p.productId);
+  
+        const productsRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}products`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const allProducts = await productsRes.json();
+  
+        const enriched = allProducts
+          .filter((prod: any) => productIds.includes(prod._id))
+          .map((prod: any) => {
+            const match = analysis.selectedProducts.find((a: any) => a.productId === prod._id);
+            return { ...prod, analysis: match?.analysis };
+          });
+  
+        setState({ matchedProducts: enriched });
+      } catch (err) {
+        console.error('Analysis error:', err);
+      } finally {
+        setIsAnalyzing(false);
+      }
+    };
+  
+    const generateImage = async () => {
+      if (!selectedImage || !matchedProducts?.length) return;
+  
+      setIsGenerating(true);
+      
+      try {
+        const genFormData = new FormData();
+        genFormData.append('roomImage', {
+          uri: selectedImage,
+          name: 'room.jpg',
+          type: 'image/jpeg',
+        } as any);
+        genFormData.append('style', selectedStyle);
+        genFormData.append(
+          'selectedProductIds',
+          matchedProducts.map((p) => p._id).join(',')
+        );
+  
+        const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}ai/generate/room-with-products`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: genFormData,
+        });
+  
+        const { image } = await res.json();
+        setState({ generatedImage: `data:image/jpeg;base64,${image}` });
+      } catch (err) {
+        console.error('Image generation failed:', err);
+      } finally {
+        setIsGenerating(false);
+      }
+    };
+  
+    const handleAddToCart = (product: any) => {
+      if (!generatedImage) {
+        alert('Please generate the room image first');
+        return;
+      }
+      
+      const customizationData = {
+        analysis: product.analysis,
+        generatedImage: generatedImage
+      };
+      addToCart(product, customizationData);
+      setShowCartFeedback(true);
+      
+      // Hide feedback after 2 seconds
+      setTimeout(() => setShowCartFeedback(false), 2000);
+    };
+  
+    return (
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <TopBar />
+          <Text style={styles.title}>Design Your Room</Text>
+          <Text style={styles.description}>
+            Upload a room photo and let us match products + generate a visual.
+          </Text>
+  
+          {/* Style Selector */}
+          <View style={styles.styleList}>
+            {STYLE_OPTIONS.map((style) => (
+              <Pressable
+                key={style}
+                onPress={() => setState({ selectedStyle: style })}
                 style={[
-                  styles.styleText,
-                  selectedStyle === style && styles.selectedStyleText,
+                  styles.styleOption,
+                  selectedStyle === style && styles.selectedStyleOption,
                 ]}
               >
-                {style}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Upload / Preview */}
-        {!selectedImage ? (
-          <Pressable style={styles.uploadButton} onPress={pickImage}>
-            <MaterialIcons name="add-a-photo" size={40} color={Colors.buttonBackground} />
-            <Text style={styles.uploadText}>Upload Room Photo</Text>
-          </Pressable>
-        ) : (
-          <Pressable onPress={pickImage} style={styles.previewWrapper}>
-            <Image source={{ uri: selectedImage }} style={styles.previewImage} />
-          </Pressable>
-        )}
-
-        {/* Analyze Button */}
-        {selectedImage && !matchedProducts.length && (
-          <Button onPress={analyzeRoom} style={styles.actionButton}>
-            Analyze Room
-          </Button>
-        )}
-
-        {/* Matched Products */}
-        {matchedProducts?.length > 0 && (
-          <>
-            {matchedProducts.map((product) => (
-              <MatchedProductCard
-                key={product._id}
-                product={product}
-                onAddToCart={() => handleAddToCart(product)}
-              />
+                <Text
+                  style={[
+                    styles.styleText,
+                    selectedStyle === style && styles.selectedStyleText,
+                  ]}
+                >
+                  {style}
+                </Text>
+              </Pressable>
             ))}
-
-            <View style={styles.actionColumn}>
-              <Button onPress={analyzeRoom} style={styles.actionButton}>
-                Regenerate Product List
-              </Button>
-              <Button onPress={generateImage} style={styles.actionButton}>
-                Generate Room Image
-              </Button>
-            </View>
-          </>
-        )}
-
-        {/* Loading States */}
-        {loadingList && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={Colors.buttonBackground} />
-            <Text style={styles.loadingText}>Analyzing room...</Text>
           </View>
-        )}
-
-        {loadingImage && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={Colors.buttonBackground} />
-            <Text style={styles.loadingText}>Generating room image...</Text>
-          </View>
-        )}
-
-        {/* Final Image */}
-        {generatedImage && (
+  
+          {/* Upload / Preview */}
+          {!selectedImage ? (
+            <Pressable style={styles.uploadButton} onPress={pickImage}>
+              <MaterialIcons name="add-a-photo" size={40} color={Colors.buttonBackground} />
+              <Text style={styles.uploadText}>Upload Room Photo</Text>
+            </Pressable>
+          ) : (
+            <Pressable onPress={pickImage} style={styles.previewWrapper}>
+              <Image source={{ uri: selectedImage }} style={styles.previewImage} />
+            </Pressable>
+          )}
+  
+          {/* Analyze Button */}
+          {selectedImage && !matchedProducts.length && (
+            <Button 
+              onPress={analyzeRoom} 
+              style={styles.actionButton}
+              disabled={isAnalyzing}
+            >
+              {isAnalyzing ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                'Analyze Room'
+              )}
+            </Button>
+          )}
+  
+          {/* Matched Products */}
+          {matchedProducts?.length > 0 && (
             <>
-                <Text style={styles.sectionTitle}>Generated Design</Text>
-                <Image source={{ uri: generatedImage }} style={styles.generatedImage} />
-                <Button onPress={generateImage} style={styles.regenImageButton}>
-                Regenerate Room Image
+              {matchedProducts.map((product) => (
+                <MatchedProductCard
+                  key={product._id}
+                  product={product}
+                  onAddToCart={() => handleAddToCart(product)}
+                />
+              ))}
+  
+              <View style={styles.actionColumn}>
+                <Button 
+                  onPress={analyzeRoom} 
+                  style={styles.actionButton}
+                  disabled={isAnalyzing}
+                >
+                  {isAnalyzing ? (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    'Regenerate Product List'
+                  )}
                 </Button>
-                <View style={styles.spacer} />
+                <Button 
+                  onPress={generateImage} 
+                  style={styles.actionButton}
+                  disabled={isGenerating}
+                >
+                  {isGenerating ? (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    'Generate Room Image'
+                  )}
+                </Button>
+              </View>
             </>
-        )}
-
-        <View style={{ height: 50 }} />
-      </ScrollView>
-    </View>
-  );
-}
+          )}
+  
+          {/* Loading State for Image Generation */}
+          {isGenerating && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={Colors.buttonBackground} />
+              <Text style={styles.loadingText}>Generating room image...</Text>
+            </View>
+          )}
+  
+          {/* Final Image */}
+          {generatedImage && (
+            <>
+              <Text style={styles.sectionTitle}>Generated Design</Text>
+              <Image source={{ uri: generatedImage }} style={styles.generatedImage} />
+              <Button 
+                onPress={generateImage} 
+                style={styles.regenImageButton}
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  'Regenerate Room Image'
+                )}
+              </Button>
+              <View style={styles.spacer} />
+            </>
+          )}
+  
+          <View style={{ height: 50 }} />
+        </ScrollView>
+      </View>
+    );
+  }
 
 const styles = StyleSheet.create({
     container: {
@@ -316,9 +354,10 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     generatedImage: {
-        width: '100%',
+        width: '85%',
         aspectRatio: 1,
         borderRadius: 15,
+        alignSelf: 'center'
     },
     actionColumn: {
         flexDirection: 'column',

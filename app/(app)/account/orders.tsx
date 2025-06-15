@@ -47,28 +47,6 @@ import {
     const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
     
     
-    const loadImageAsBase64 = async (orderId: string, itemId: string) => {
-        const uri = `${process.env.EXPO_PUBLIC_API_URL}orders/${orderId}/item/${itemId}/image`;
-        try {
-          const res = await fetch(uri, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const blob = await res.blob();
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64 = reader.result?.toString().split(',')[1];
-            if (base64) {
-              setCustomImageMap((prev) => ({ ...prev, [itemId]: base64 }));
-            }
-          };
-          reader.readAsDataURL(blob);
-        } catch (err) {
-          console.error(`Failed to fetch image for item ${itemId}:`, err);
-        }
-      };
-      
-
-  
     const fetchOrders = async () => {
       try {
         setLoading(true);
@@ -203,17 +181,18 @@ import {
                         </View>
                       </View>
                     </View>
-  
-                    <Text style={styles.customizationLabel}>Customized Version</Text>
-                    {customImageMap[item._id] ? (
-                      <ImageWithLoader
-                        source={{ uri: `data:image/png;base64,${customImageMap[item._id]}` }}
-                        style={styles.customizationImage}
-                      />
-                    ) : (
-                      <ActivityIndicator size="small" color={Colors.buttonBackground} />
+
+                    {/* Only show customized version section if there's a custom image */}
+                    {item.customization && customImageMap[item._id] && (
+                      <>
+                        <Text style={styles.customizationLabel}>Customized Version</Text>
+                        <ImageWithLoader
+                          source={{ uri: `data:image/png;base64,${customImageMap[item._id]}` }}
+                          style={styles.customizationImage}
+                        />
+                      </>
                     )}
-  
+
                     {item.customization?.analysis && renderAnalysis(item.customization.analysis)}
                   </View>
                 ))}

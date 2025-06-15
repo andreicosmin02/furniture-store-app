@@ -758,5 +758,6 @@ import {
     statusButtonText: {
       fontSize: 12,
       fontWeight: '500',
+      color: Colors.inputText
     },
   });
