@@ -23,6 +23,7 @@ type CartState = {
     clearCart: () => void;
     incrementQuantity: (id: string) => void;
     decrementQuantity: (id: string) => void;
+    reset: () => void;
 };  
 
 export const useCartStore = create<CartState>()(
@@ -79,6 +80,9 @@ export const useCartStore = create<CartState>()(
                         return item;
                     }).filter(Boolean) as CartItem[],
                 })),
+            reset: () => set({
+                items: [],
+            }),
         }),
         {
             name: 'furniture-cart-storage',

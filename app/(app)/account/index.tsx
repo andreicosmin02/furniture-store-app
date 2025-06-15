@@ -6,6 +6,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, ActivityIndicator } from "react-native";
+import { useProductCustomizationStore } from '@/app/data/productCustomizationStore';
+import { useGenerateRoomStore } from '@/app/data/generateRoomStore';
+import { useCartStore } from '@/app/data/cartStore';
 
 export default function Account() {
     const { user, logout } = useAuthStore();
@@ -15,6 +18,15 @@ export default function Account() {
     const [error, setError] = useState<string | null>(null);
 
     const handleLogout = () => {
+        // Clear token or session
+        useAuthStore.getState().logout();
+
+        // Clear persistent state
+        useProductCustomizationStore.getState().reset();
+        useGenerateRoomStore.getState().reset();
+        useCartStore.getState().reset();
+
+
         logout();
         router.replace('/login');
     };
