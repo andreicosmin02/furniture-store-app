@@ -1,21 +1,26 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import ImageWithLoader from "./ImageWithLoader";
 import { fetchProductImage } from "@/app/services/api";
 
 interface MatchedProductCardProps {
-  product: any;
-  onAddToCart: () => void;
-}
+    product: any;
+    onAddToCart: () => void;
+    generatedRoomImage?: string | null;
+  }
 
 const displayOrNA = (value: any) => {
   if (Array.isArray(value)) return value.length ? value.join(', ') : 'N/A';
   return value || 'N/A';
 };
 
-export default function MatchedProductCard({ product, onAddToCart }: MatchedProductCardProps) {
+export default function MatchedProductCard({ 
+    product, 
+    onAddToCart,
+    generatedRoomImage
+  }: MatchedProductCardProps) {
   const [expanded, setExpanded] = useState(false);
   const toggle = () => setExpanded(prev => !prev);
 
@@ -39,6 +44,16 @@ export default function MatchedProductCard({ product, onAddToCart }: MatchedProd
           <Pressable onPress={onAddToCart} style={styles.cartButton}>
             <Text style={styles.cartText}>Add to Cart</Text>
           </Pressable>
+
+          {generatedRoomImage && (
+            <View style={styles.generatedRoomContainer}>
+            <Text style={styles.generatedRoomLabel}>Customized in Your Room</Text>
+            <Image 
+                source={{ uri: generatedRoomImage }} 
+                style={styles.generatedRoomImage} 
+            />
+            </View>
+        )}
         </View>
       </View>
 
@@ -142,4 +157,20 @@ const styles = StyleSheet.create({
     color: Colors.primaryText,
     lineHeight: 18,
   },
+  generatedRoomContainer: {
+    marginTop: 15,
+    paddingTop: 10,
+  },
+  generatedRoomLabel: {
+    fontWeight: 'bold',
+    color: Colors.buttonBackground,
+    marginBottom: 5,
+  },
+  generatedRoomImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+
 });

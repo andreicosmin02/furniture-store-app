@@ -15,6 +15,7 @@ import TopBar from '@/app/components/TopBar';
 import { useAuthStore } from '@/app/data/authStore';
 import Button from '@/app/components/Button';
 import MatchedProductCard from '@/app/components/MatchedProductCard';
+import useCartStore from '@/app/data/cartStore';
 
 // Styles available
 const STYLE_OPTIONS = [
@@ -39,6 +40,16 @@ export default function GenerateRoom() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [matchedProducts, setMatchedProducts] = useState<any[]>([]);
   const { token } = useAuthStore();
+  const addToCart = useCartStore((state) => state.addToCart);
+
+  const handleAddToCart = (product: any) => {
+    const customizationData = {
+      analysis: product.analysis,
+      generatedRoomImage: generatedImage
+    };
+    
+    addToCart(product, customizationData);
+  };
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -197,10 +208,11 @@ export default function GenerateRoom() {
         {/* Matched Products */}
         {matchedProducts.map(product => (
           <MatchedProductCard
-            key={product._id}
-            product={product}
-            onAddToCart={() => console.log('Add to cart', product._id)}
-          />
+                key={product._id}
+                product={product}
+                onAddToCart={() => handleAddToCart(product)}
+                // generatedRoomImage={generatedImage}
+            />
         ))}
 
         {/* Action Buttons */}

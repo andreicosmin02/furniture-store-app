@@ -18,6 +18,7 @@ import Button from '@/app/components/Button';
 import { useAuthStore } from '@/app/data/authStore';
 import { useCartStore } from '@/app/data/cartStore';
 import { useLocalSearchParams } from 'expo-router';
+import { useProductCustomizationStore } from '@/app/data/productCustomizationStore';
 
 export default function ProductCustomizationScreen() {
   const { product } = useLocalSearchParams();
@@ -36,6 +37,8 @@ export default function ProductCustomizationScreen() {
   const [generatedRoomImage, setGeneratedRoomImage] = useState<string | null>(null);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [customInputs, setCustomInputs] = useState<Record<string, string>>({});
+
+  
 
   const formatProductDescription = (description: string) => {
     const normalized = description.replace(/\s{2,}/g, "\n");
@@ -258,6 +261,19 @@ export default function ProductCustomizationScreen() {
       .replace('Changes', '')
       .trim();
   };
+
+  const handleAddCustomizedToCart = () => {
+    if (!productObject) return;
+    
+    const customizationData = {
+        analysis,
+        customSelections,
+        generatedImage: generatedFurnitureImage
+    };
+    
+    addToCart(productObject, customizationData);
+  };
+
 
   return (
     <View style={styles.container}>
@@ -500,6 +516,13 @@ export default function ProductCustomizationScreen() {
                       source={{ uri: generatedFurnitureImage }} 
                       style={styles.generated} 
                     />
+
+                    <Button 
+                        onPress={handleAddCustomizedToCart}
+                        style={styles.addToCartButton}
+                        >
+                        Add Customized to Cart
+                    </Button>
                   </View>
                 )}
                 
@@ -747,5 +770,9 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1,
     borderRadius: 12,
+  },
+  addToCartButton: {
+    marginTop: 20,
+    backgroundColor: Colors.buttonBackground,
   },
 });
