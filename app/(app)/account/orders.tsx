@@ -45,6 +45,28 @@ import {
     const [error, setError] = useState<string | null>(null);
     const [customImageMap, setCustomImageMap] = useState<{ [itemId: string]: string }>({});
     const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+    
+    
+    const loadImageAsBase64 = async (orderId: string, itemId: string) => {
+        const uri = `${process.env.EXPO_PUBLIC_API_URL}orders/${orderId}/item/${itemId}/image`;
+        try {
+          const res = await fetch(uri, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const blob = await res.blob();
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64 = reader.result?.toString().split(',')[1];
+            if (base64) {
+              setCustomImageMap((prev) => ({ ...prev, [itemId]: base64 }));
+            }
+          };
+          reader.readAsDataURL(blob);
+        } catch (err) {
+          console.error(`Failed to fetch image for item ${itemId}:`, err);
+        }
+      };
+      
 
   
     const fetchOrders = async () => {

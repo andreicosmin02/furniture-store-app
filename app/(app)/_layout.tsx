@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useAuthStore } from "../data/authStore";
 
 export default function AppLayout() {
-    const { token, isLoading } = useAuthStore();
+    const { token, isLoading, user } = useAuthStore();
 
     if (isLoading) {
         return (
@@ -109,6 +109,16 @@ export default function AppLayout() {
                     headerRight: returnHome,
                     headerTitleAlign: 'center'
                 }}/>
+                {(user?.role === 'admin' || user?.role === 'employee') && (
+                    <Stack.Screen
+                        name="admin/order"
+                        options={{
+                            title: 'Manage Orders',
+                            headerRight: returnHome,
+                            headerTitleAlign: 'center'
+                        }}
+                    />
+                )}
             </Stack>
         </>
     );

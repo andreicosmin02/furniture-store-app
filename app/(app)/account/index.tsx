@@ -16,6 +16,7 @@ export default function Account() {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
+    const isAdminOrEmployee = userData?.role === 'admin' || userData?.role === 'employee';
 
     const handleLogout = () => {
         // Clear token or session
@@ -129,6 +130,23 @@ export default function Account() {
                                 </Pressable>
                             </Link>
                         </View>
+                        {isAdminOrEmployee && (
+                            <>
+                                <Text style={styles.sectionTitle}>Admin Tools</Text>
+                                <Link href="/(app)/admin/order" asChild>
+                                    <Pressable style={styles.settingsItem}>
+                                        <MaterialIcons name="assignment" size={24} color={Colors.buttonBackground} />
+                                        <Text style={styles.settingsText}>Manage All Orders</Text>
+                                        <MaterialIcons 
+                                            name="chevron-right" 
+                                            size={24} 
+                                            color={Colors.primaryText}
+                                            style={{ marginLeft: 'auto' }}
+                                        />
+                                    </Pressable>
+                                </Link>
+                            </>
+                        )}
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Account Settings</Text>
                             <View style={styles.settingsItem}>
