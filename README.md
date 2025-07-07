@@ -1,62 +1,72 @@
-# Furniture Configuration and Arrangement System
-###### **Note**: This app is still in **development phase**. Some features may be incomplete or unstable.  
+# Furniture Store App
 
-**Buy simpler, track in real-time, receive hassle-free.**
+A **React Native app** for **designing, purchasing, and managing furniture orders seamlessly**. Customers can browse products, generate AI-based room designs, and track orders in real-time, while employees can manage and fulfill orders efficiently.
 
+This app communicates with the [andreicosmin02/furniture-store-api](https://github.com/andreicosmin02/furniture-store-api) for authentication, product, order, and room generation functionalities.
 
-## Description
-This React Native application simplifies the process of purchasing and managing furniture orders for both customers and employees. Customers can browse products, place orders, and track their status in real-time. Employees manage active orders, prepare items, and keep customers informed at every step.
+## Features
 
-### Key Features
-- **Purchase furniture directly from the app**  
-  Browse products, add to cart, and place orders seamlessly within the app.
-- **Real-time order tracking**  
-  Customers see live updates: "Processing," "Preparing," "Ready for Delivery."
-- **Employee order management**  
-  View active orders, select products from the warehouse, and update order statuses.
-- **Smart notifications**  
-  Automated alerts for every status change, reducing manual follow-ups.
+- **Product browsing, cart, and checkout**
+- **Room design generator** with style selection and image upload
+- **AI-based furniture placement and analysis**
+- **Real-time order tracking**
+- **Admin/employee order management panel**
+- **JWT authentication and protected routes**
 
-## Workflow
+## Screenshots
 
-### For Customers
-1. **Browse Products** – Explore the furniture catalog.
-2. **Select Items** – Add desired products to your cart.
-3. **Place Order** – Confirm and submit your order.
-4. **Track Status in Real-Time** – Monitor updates like "Processing", "Preparing", or "Ready for Delivery".
-
-### For Employees
-1. **View Active Orders** – See all pending/completed orders.
-2. **Process Order** – Assign and start preparing the order.
-3. **Prepare Items** – Collect products from the warehouse.
-4. **Update Order Status** – Notify customers at every stage (e.g., "Ready for Delivery").
-
----
-
-## Technologies Used
-| **Frontend** | **Backend** | **Infrastructure & DevOps** |  
-|--------------|-------------|-----------------------------|  
-| React Native | Node.js     | AWS EC2                     |  
-| TypeScript   | Express.js  | GitHub Actions              |  
-| SQLite       | MongoDB     | Docker                      |  
-|              | JWT (Auth)  | Nginx                       |  
-
----
+<p align="center">
+  <img src="./assets/0.jpeg" width="30%" />
+  <img src="./assets/1.jpeg" width="30%" />
+  <img src="./assets/2.jpeg" width="30%" /><br>
+  <img src="./assets/3.jpeg" width="30%" />
+  <img src="./assets/4.jpeg" width="30%" />
+  <img src="./assets/5.jpeg" width="30%" />
+</p>
 
 ## Installation
-1. **Clone the repository**
-   ```bash  
-   git clone https://github.com/andreicosmin02/furniture-store-app  
-   cd furniture-store-app
-   ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+1. Clone the repository:
 
-3. Run the project
-   ```bash
-   npm start
-   ```
+```bash
+git clone https://github.com/andreicosmin02/furniture-store-app
+cd furniture-store-app
+```
 
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env` or use Expo's environment system to set:
+
+```
+EXPO_PUBLIC_API_URL=https://your-api-url/
+```
+
+4. Run the app:
+
+```bash
+npm start
+```
+
+## API Reference
+
+This app integrates with [andreicosmin02/furniture-store-api](https://github.com/andreicosmin02/furniture-store-api) for:
+
+- User authentication and profile management
+- Product catalog retrieval and search
+- Order creation, tracking, and admin management
+- AI-powered room design generation and analysis
+
+## Tech Stack
+
+- **Frontend:** React Native, Expo, TypeScript
+- **State:** Zustand
+- **Backend:** Node.js, Express.js (via furniture-store-api)
+- **Database:** MongoDB
+
+---
+
+Build once, furnish many.
